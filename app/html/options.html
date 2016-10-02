@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="utf-8">
+<title></title>
+<link rel="stylesheet" href="/css/options.css">
+
+<div class="area options">
+	<h1>Options</h1>
+	<div class="section">
+		<h2>General</h2>
+		<div class="content">
+			<div class="input-container">
+				<input type="checkbox" class="option" id="Badge_Enabled">
+				<label for="Badge_Enabled">Enable live badge</label>
+			</div>
+			<div class="input-container">
+				<input type="checkbox" class="option" id="Favorites_AutoByNotifications">
+				<label for="Favorites_AutoByNotifications">Auto-favorite channels</label>
+				<p class="help">Automatically favorite channels that Twitch notifies you about.</p>
+			</div>
+		</div>
+	</div>
+	<div class="section">
+		<h2>Notifications</h2>
+		<div class="content">
+			<p class="description">These options determine the appearance and frequency of desktop notifications.</p>
+			<div class="input-container">
+				<input type="checkbox" class="option" id="Notifications_Enabled">
+				<label for="Notifications_Enabled">Enable desktop notifications</label>
+			</div>
+			<div class="input-container">
+				<input type="checkbox" class="option" id="Notifications_FavoritesOnly">
+				<label for="Notifications_FavoritesOnly">Only notify me about my favorite channels</label>
+			</div>
+			<div class="input-container">
+				<input type="checkbox" class="option" id="Notifications_ShowGame">
+				<label for="Notifications_ShowGame">Display game in notifications</label>
+			</div>
+			<div class="input-container">
+				<input type="checkbox" class="option" id="Notifications_ShowViewers">
+				<label for="Notifications_ShowViewers">Display viewers in notifications</label>
+			</div>
+			<div class="input-container">
+				<input type="checkbox" class="option" id="Notifications_ShowDescription">
+				<label for="Notifications_ShowDescription">Display status in notifications</label>
+			</div>
+		</div>
+	</div>
+	<div class="section">
+		<h2>Stream Sorting</h2>
+		<div class="content">
+			<p class="description">These options determine how live streams are sorted, both in the popup and in desktop notifications.</p>
+			<div class="input-container">
+				<label for="Streams_SortAttribute">Sort streams by</label>
+				<select class="option" id="Streams_SortAttribute">
+					<option value="name">Name</option>
+					<option value="game">Game</option>
+					<option value="viewers">Viewers</option>
+				</select>
+			</div>
+			<div class="input-container">
+				<input type="checkbox" class="option" id="Streams_SortDescending">
+				<label for="Streams_SortDescending">Descending</label>
+			</div>
+			<div class="input-container">
+				<label for="Streams_GroupAttribute">Group streams by</label>
+				<select class="option" id="Streams_GroupAttribute">
+					<option value="game">Game</option>
+					<option value="favorite">Favorite</option>
+				</select>
+			</div>
+			<div class="input-container">
+				<input type="checkbox" class="option" id="Streams_GroupDescending">
+				<label for="Streams_GroupDescending">Descending</label>
+			</div>
+		</div>
+	</div>
+	<div class="section">
+		<h2>Channel Sorting</h2>
+		<div class="content">
+			<p class="description">These options determine how channels are sorted, both in the popup and in desktop notifications.</p>
+			<div class="input-container">
+				<label for="Channels_SortAttribute">Sort channels by</label>
+				<select class="option" id="Channels_SortAttribute">
+					<option value="name">Name</option>
+					<option value="followers">Followers</option>
+				</select>
+			</div>
+			<div class="input-container">
+				<input type="checkbox" class="option" id="Channels_SortDescending">
+				<label for="Channels_SortDescending">Descending</label>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="area feedback">
+	<h1>About</h1>
+	<div class="section">
+		<h2>Feedback</h2>
+		<div class="content">
+			<h3>Report bugs</h3>
+			<p>Submit bug reports to the GitHub <a href="https://github.com/ideoderek/twitch-tuner">repository</a> by creating a new issue, or providing additional information to an existing issue. Or email <a href="mailto:ideoderek@gmail.com">ideoderek@gmail.com</a>.</p>
+			<h3>Request features</h3>
+			<p>Submit feature requests to the GitHub <a href="https://github.com/ideoderek/twitch-tuner">repository</a> by creating a new issue. Or email <a href="mailto:ideoderek@gmail.com">ideoderek@gmail.com</a>.</p>
+		</div>
+	</div>
+	<div class="section">
+		<h2>Contribute</h2>
+		<div class="content">
+			<h3>Translate</h3>
+			<p>To contribute translations, first email <a href="mailto:ideoderek@gmail.com">ideoderek@gmail.com</a> for a list of user-visible strings.</p>
+			<h3>Develop</h3>
+			<p>To contribute code, checkout the GitHub <a href="https://github.com/ideoderek/twitch-tuner">repository</a> and submit a pull request.</p>
+		</div>
+	</div>
+	<div class="section">
+		<h2>Attribution</h2>
+		<div class="content">
+			<h3>Images</h3>
+			<p>The majority of this extension's images are Google's open source material design icons (or are derived from those icons).</p>
+			<p>Google makes its material design icons available under the Apache License Version 2.0; check out their <a href="https://design.google.com/icons/">website</a> and GitHub <a href="https://github.com/google/material-design-icons/">repository</a>.</p>
+		</div>
+	</div>
+</div>
+<script src="/js/Options.js"></script>

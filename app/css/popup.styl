@@ -1,0 +1,262 @@
+@import "app"
+
+*
+	box-sizing border-box
+
+body
+	margin 0
+	width 320px
+	font-size 18px
+	font-family $body_font
+
+#header
+	padding-top 7px
+
+	.bar
+		padding-left 12px
+		padding-right 12px
+
+		& + .bar
+			margin-top 10px
+
+	.content
+		display inline-block
+		vertical-align middle
+
+	.controls
+		display inline-block
+		vertical-align middle
+		position absolute
+		right 12px
+
+	.button
+		width 24px
+		height 24px
+		cursor pointer
+
+#title_bar
+	font-size 0.9em
+	letter-spacing 1px
+	word-spacing 3px
+
+#user_bar
+	background #7E5BBE
+	color #FFFFFF
+	font-size 0.9em
+	padding-top 5px
+	padding-bottom 10px
+
+	&.warning
+		background #F2DE50
+		color black
+
+#user_bar label,
+#username_field,
+.button-row
+	display block
+
+#username_display
+	cursor pointer
+
+#username_editor
+	display none
+
+#user_bar.editing #username_editor
+	display block
+
+#username_field
+	border 1px solid #442185
+	background #FFFFFF
+	font-size 1em
+	padding 4px 6px 5px 6px
+	margin 9px auto
+	text-align center
+	letter-spacing 2px
+
+.button-row
+	text-align right
+
+.button-row button + button
+	margin-left 8px
+
+#username_confirm,
+#username_cancel
+	border 1px solid black
+	padding 3px 7px 5px 7px
+	color #FFFFFF
+	font-size 14px
+	font-family $control_font
+	cursor pointer
+
+#username_confirm
+	background #3BC13B
+	border-color #2BB12B
+
+#username_cancel
+	background transparent
+	border-color transparent
+
+#options_button
+	background url('/img/options.png')
+
+#edit_button
+	background url('/img/edit.png')
+
+#reload_button
+	cursor pointer
+	background url('/img/reload.png')
+
+#reload_button.updating
+	animation-name reload_button_updating
+	animation-duration 1.5s
+	animation-iteration-count infinite
+	animation-timing-function cubic-bezier(0.6, -0.28, 0.735, 0.045)
+
+@keyframes reload_button_updating
+	100%
+		transform rotateZ(360deg)
+
+#info_bar
+	font-size 0.8em
+
+	.content
+		cursor default
+
+#time_label
+	color #5F5F5F
+
+#time_display
+	margin-left 10px
+
+nav
+	font-size 0.8em
+	margin-top 30px
+
+	ul
+		margin 0
+		list-style-type none
+		padding 0
+
+	li
+		color #6441A5
+		color #111111
+		display inline-block
+		padding 6px 8px 8px 8px
+		letter-spacing 1px
+		cursor pointer
+		width 50%
+		text-align center
+
+		&.active,
+		&.active:hover
+			background #6441A5
+			color #FFFFFF
+
+		&:hover
+			background #7E5BBE
+			color #FFFFFF
+
+#lists
+	background #6441A5
+	padding 5px
+
+	ul
+		margin 0
+		list-style-type none
+		margin 0
+		padding 0
+		display none
+
+		&.active
+			display block
+
+.notice
+	margin 0
+	padding 10px 20px
+	background #7E5BBE
+	color #FFFFFF
+
+.item
+	background #FAFAFA
+	cursor pointer
+	border-radius 1px 1px 0 0
+	border 1px solid #442185
+	padding 6px
+	position relative
+
+	& + .item
+		margin-top 5px
+
+	h2
+		font-size 1em
+		letter-spacing 1px
+		margin 0
+		font-weight normal
+		font-family $subheading_font
+
+	p
+		margin 6px 0 0 0
+		font-size 0.8em
+
+	.game
+		text-decoration underline
+		color #6441A5
+
+	.icon
+		vertical-align middle
+		padding-right 6px
+
+	.favorite
+		float right
+		width 24px
+		height 24px
+		vertical-align middle
+
+		&[data-favorite='true']
+			background url('/img/favorite-favorited.png')
+
+		&[data-favorite='true']:hover
+			background url('/img/favorite-unfavorite.png')
+
+	&:hover .favorite[data-favorite='false']
+		background url('/img/favorite-unfavorited.png')
+
+.preview-button
+	background-color $primary_color
+	background-image url('/img/preview-show.png')
+	background-repeat no-repeat
+	background-position center
+	border-width 1px 0 0 1px
+	border-style solid
+	border-color $primary_dark
+	border-radius 6px 6px 0 6px
+	width 32px
+	height 32px
+	position absolute
+	right -1px
+	bottom -1px
+	z-index 1
+
+	.show-preview &
+		background-image url('/img/preview-hide.png')
+
+.preview
+	margin-top 6px
+	display none
+	position relative
+
+	.show-preview &
+		display block
+
+	img
+		width 100%
+
+	&:hover:before
+		content attr(data-description)
+		background rgba(255, 255, 255, 0.9)
+		position absolute
+		top 0
+		left 0
+		font-size 0.7em
+		color #000000
+		padding 0 6px 4px 6px

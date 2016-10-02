@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="utf-8">
+<title></title>
+<link rel="stylesheet" href="/css/popup.css">
+
+<div id="header">
+	<div class="bar" id="title_bar">
+		<div class="content">Twitch Tuner</div>
+		<div class="controls">
+			<div class="button" id="options_button"></div>
+		</div>
+	</div>
+	<div class="bar" id="user_bar">
+		<div id="username">
+			<div class="content">
+				<div id="username_display"></div>
+			</div>
+			<div class="controls">
+				<div class="button" id="edit_button"></div>
+			</div>
+		</div>
+		<div id="username_editor">
+			<input type="text" id="username_field">
+			<div class="button-row">
+				<button type="button" id="username_cancel">cancel</button>
+				<button type="button" id="username_confirm">save</button>
+			</div>
+		</div>
+	</div>
+	<div class="bar" id="info_bar">
+		<div class="content">
+			<div id="time_label">Last update:</div>
+			<div id="time_display">None</div>
+		</div>
+		<div class="controls">
+			<div class="button" id="reload_button"></div>
+		</div>
+	</div>
+</div>
+<nav>
+	<ul id="tab_bar">
+		<li id="streams_tab" class="tab" data-tab="streams">Streams</li><li id="channels_tab" class="tab" data-tab="channels">Channels</li>
+	</ul>
+</nav>
+<div id="lists">
+	<ul id="streams_pane" class="streams toggleable">
+
+	</ul>
+	<ul id="channels_pane" class="channels toggleable">
+
+	</ul>
+</div>
+<!-- Several stable-channel releases of Chrome contain a bug that interferes with scrolling in extension popups. -->
+<!-- These releases include version 53.0.2785.143 m, but may not include more recent releases. -->
+<!-- Including an empty, fixed-position element appears to fix this bug. -->
+<div style="position:fixed"></div>
+<script src="/js/Popup.js"></script>

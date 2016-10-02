@@ -1,0 +1,77 @@
+@import "app"
+
+body
+	margin 0
+	color #222222
+
+.area
+	padding 20px 10px
+
+	.section
+		border-bottom-width 2px
+		border-bottom-style solid
+		margin-top 20px
+
+	&.options
+		background $primary_color
+
+		.section
+			border-bottom-color $primary_dark
+
+	&.feedback
+		background $secondary_color
+
+		.section
+			border-bottom-color $secondary_dark
+
+h1,
+h2,
+h3
+	margin 0
+	font-weight normal
+
+h1
+	text-align center
+	tracking 4px
+	text-transform uppercase
+	color #FFFFFF
+	font-family $heading_font
+	font-size 22px
+
+h2
+	background #DADADA
+	padding 5px 10px 7px 10px
+	font-family $heading_font
+	font-size 18px
+	tracking 1px 2px
+	color #000000
+
+h3
+	font-family $subheading_font
+	font-size 18px
+	tracking 1px
+	color #000000
+
+	& ~ h3
+		margin-top 16px
+
+p
+	margin 0
+	text-align justify
+
+.content
+	padding 12px
+	background #FAFAFA
+	font-size 16px
+	line-height 1.4
+
+.help
+	margin 5px 20px 0 20px
+	line-height 1.3
+	font-size 0.8em
+
+.input-container
+	font-family Arial
+
+	* ~ &
+		margin-top 10px

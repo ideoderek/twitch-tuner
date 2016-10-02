@@ -1,0 +1,36 @@
+{
+  "name": "twitch-tuner",
+  "version": "0.1.0",
+  "description": "A Chrome extension that notifies users when their favorite Twitch.tv streamers are live.",
+  "homepage": "https://github.com/ideoderek/twitch-tuner",
+  "author": {
+    "name": "ideoderek",
+    "url": "https://github.com/ideoderek"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ideoderek/twitch-tuner.git"
+  },
+  "scripts": {
+    "js:pack": "copyfiles -f app/js/*.js pkg/js",
+    "js:watch": "watch \"npm run js:pack\" app/js",
+    "css:pack": "mkdirp pkg/css && stylus app/css/options.styl app/css/popup.styl -o pkg/css",
+    "css:watch": "watch 'npm run css:pack' app/css",
+    "img:pack": "copyfiles -f app/img/*.png pkg/img",
+    "img:watch": "watch 'npm run img:pack' app/img",
+    "html:pack": "copyfiles -f app/html/*.html pkg/html",
+    "html:watch": "watch 'npm run html:pack' app/html",
+    "manifest:pack": "copyfiles -f app/manifest.json pkg",
+    "manifest:watch": "watch 'npm run manifest:pack' app --ignoreDirectoryPattern=/.+/",
+    "pack": "npm run js:pack && npm run css:pack && npm run img:pack && npm run html:pack && npm run manifest:pack",
+    "watch-pack": "parallelshell 'npm run js:watch' 'npm run css:watch' 'npm run img:watch' 'npm run html:watch' 'npm run manifest:watch'"
+  },
+  "devDependencies": {
+    "copyfiles": "^1.0.0",
+    "mkdirp": "^0.5.1",
+    "parallelshell": "^2.0.0",
+    "stylus": "^0.54.5",
+    "watch": "^0.19.2"
+  }
+}

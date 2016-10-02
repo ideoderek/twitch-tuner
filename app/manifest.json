@@ -1,0 +1,56 @@
+{
+	"manifest_version": 2,
+
+	"name": "Twitch Tuner",
+	"author": "ideoderek",
+	"description": "Get notified when the Twitch.tv streamers you follow are live.",
+	"homepage_url": "https://github.com/ideoderek/twitch-tuner",
+
+	"version": "0.1.0",
+	"version_name": "October 2, 2016 (version 0.1.0)",
+
+	"minimum_chrome_version": "28",
+
+	"icons": {
+		"48": "img/icon48.png",
+		"128": "img/icon128.png"
+	},
+
+	"permissions": [
+		"notifications",
+		"https://api.twitch.tv/"
+	],
+
+	"background": {
+		"persistent": true,
+		"scripts": [
+			"js/Browser.js",
+			"js/CollectionSorter.js",
+			"js/Collection.js",
+			"js/Storage.js",
+			"js/initializer.js",
+			"js/Ajax.js",
+			"js/Notifier.js",
+			"js/ChannelsContainer.js",
+			"js/Updaters.js",
+			"js/TwitchTuner.js"
+		]
+	},
+
+	"browser_action": {
+		"default_icon": {
+			"19": "img/icon19.png",
+			"38": "img/icon38.png"
+		},
+		"default_popup": "html/popup.html",
+		"default_title": "Twitch Tuner"
+	},
+
+	"options_ui": {
+		"page": "html/options.html",
+		"chrome_style": false,
+		"open_in_tab": false
+	},
+
+	"options_page": "html/options.html"
+}
