@@ -43,7 +43,6 @@ var Sorter = (function() {
 			console.log('group attr', gAttr);
 			console.log('group desc', gDesc);
 		return function(pivot, element) {
-			console.log('pivot', pivot, 'element', element);
 			var result = direction(sort(pivot[gAttr], element[gAttr]), gDesc);
 
 			if (result === 0) {
