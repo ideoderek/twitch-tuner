@@ -80,7 +80,6 @@ console.log('values[keys[0]]', values[keys[0]]);
 	};
 
 	CollectionSorter.prototype.insert = function(key, keys, values) {
-		console.log('CollectionSorter.insert(', key, keys, values, ')');
 		var value = values[key],
 			under = keys.length,
 			over = -1;
@@ -108,7 +107,6 @@ console.log('values[keys[0]]', values[keys[0]]);
 	};
 
 	CollectionSorter.prototype.update = function(key, keys, values) {
-		console.log('CollectionSorter.update(', key, keys, values, ')');
 		if (keys.length === 1) {
 			return keys;
 		}

@@ -16,13 +16,15 @@ var Ajax = (function() {
 	AjaxRequest.prototype.delay = 1000;
 
 	AjaxRequest.prototype.onerror = function() {
+		console.warn('AjaxRequest.onerror [retries:', this.retries, ']');
 		if (this.retries === 0) {
 			this.failure();
 		}
+		else {
+			this.retries -= 1;
 
-		this.retries -= 1;
-
-		this.retry = setTimeout(this.request.send, this.delay);
+			this.retry = setTimeout(this.resend.bind(this), this.delay);
+		}
 	};
 
 	AjaxRequest.prototype.url = function(url) {
@@ -94,6 +96,12 @@ var Ajax = (function() {
 		this.request.send();
 
 		return this;
+	};
+
+	AjaxRequest.prototype.resend = function() {
+	    this.request.abort();
+
+		this.send();
 	};
 
 	AjaxRequest.prototype.get = function() {
