@@ -49,36 +49,8 @@ var Ajax = (function() {
 		return this;
 	};
 
-	AjaxRequest.prototype.failure = function(callback, retries, delay) {
+	AjaxRequest.prototype.failure = function(callback) {
 		this.failure = callback;
-
-		this.retries(retries);
-		this.delay(delay);
-
-		return this;
-	};
-
-	AjaxRequest.prototype.configureFailure = function(timeout, retries, delay) {
-		this.timeout = timeout * 1000;
-
-		this.retries(retries);
-		this.delay(delay);
-
-		return this;
-	};
-
-	AjaxRequest.prototype.retries = function(retries) {
-		if (typeof retries === 'number') {
-			this.retries = retries;
-		}
-
-		return this;
-	};
-
-	AjaxRequest.prototype.delay = function(delay) {
-		if (typeof delay === 'number') {
-			this.delay = delay * 1000;
-		}
 
 		return this;
 	};
