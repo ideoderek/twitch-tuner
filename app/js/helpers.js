@@ -25,3 +25,12 @@ function hasElement(arr, element) {
 
 	return true;
 }
+
+function toggleInSet(arr, element, add) {
+	if (add) {
+		addToSet(arr, element);
+	}
+	else {
+		removeFromSet(arr, element);
+	}
+}
