@@ -1,4 +1,4 @@
-function removeElement(arr, element) {
+function removeFromSet(arr, element) {
 	var index = arr.indexOf(element);
 
 	if (index === -1) {
