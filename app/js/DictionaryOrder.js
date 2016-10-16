@@ -1,14 +1,13 @@
-function DictionaryOrder(dictionary, order) {
+function DictionaryOrder(dictionary, order, descriptor) {
     if (order === undefined) {
         order = Object.keys(dictionary);
     }
 
     this.dictionary = dictionary;
     this.order = order;
-
     this.index = 0;
 
-    this.sort();
+    this.configure(descriptor);
 }
 
 DictionaryOrder.prototype.count = function() {
@@ -31,9 +30,13 @@ DictionaryOrder.prototype.update = function(key) {
 };
 
 DictionaryOrder.prototype.configure = function(descriptor) {
-    if (this.sorter.configure(descriptor)) {
-        this.sort();
+    if (typeof descriptor !== 'object') {
+        return;
     }
+
+    this.sorter.configure(descriptor);
+
+    this.sort();
 };
 
 DictionaryOrder.prototype.next = function() {
@@ -48,4 +51,14 @@ DictionaryOrder.prototype.next = function() {
     }
 
     return this.dictionary[this.order[this.index]];
+};
+
+DictionaryOrder.prototype.remove = function(key) {
+    var index = this.order.indexOf(key);
+
+    if (index === -1) {
+        return;
+    }
+
+    this.order.splice(index, 1);
 };
