@@ -17,3 +17,11 @@ function addToSet(arr, element) {
 
 	arr.push(element);
 }
+
+function hasElement(arr, element) {
+	if (arr.indexOf(element) === -1) {
+		return false;
+	}
+
+	return true;
+}
