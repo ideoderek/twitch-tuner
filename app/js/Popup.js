@@ -162,36 +162,34 @@
 			streamList.innerHTML = html;
 		}
 
-		function generateListItem(stream) {
-			var result = '';
-
-			result += '<li class="item stream" data-channel="' + stream.channel.name + '">';
-				result += '<h2>';
-				 	result += stream.channel.displayName;
-					result += '<span class="favorite" data-favorite="' + stream.channel.favorite + '"></span>';
-				result += '</h2>';
+		function generateListItem(stream, html) {
+			html += '<li class="item stream" data-channel="' + stream.name + '">';
+				html += '<h2>';
+				 	html += stream.displayName;
+					html += '<span class="favorite" data-favorite="' + stream.favorite + '"></span>';
+				html += '</h2>';
 
 			if (stream.game !== null) {
-				result += '<p>';
-					result += '<img class="icon" src="/img/game.png">';
-					result += '<span class="game" data-game="' + stream.game + '">';
-						result += stream.game;
-					result += '</span>';
-				result += '</p>';
+				html += '<p>';
+					html += '<img class="icon" src="/img/game.png">';
+					html += '<span class="game" data-game="' + stream.game + '">';
+						html += stream.game;
+					html += '</span>';
+				html += '</p>';
 			}
 
-				result += '<p class="audience">';
-					result += '<img class="icon" src="/img/audience.png">';
-					result += '<span class="viewers">';
-					 	result += stream.formattedViewers + ' viewers';
-					result += '</span>';
-				result += '</p>';
+				html += '<p class="audience">';
+					html += '<img class="icon" src="/img/audience.png">';
+					html += '<span class="viewers">';
+					 	html += stream.formattedViewers + ' viewers';
+					html += '</span>';
+				html += '</p>';
 
-				result += '<div class="preview-button"></div>';
+				html += '<div class="preview-button"></div>';
 
-			result += '</li>';
+			html += '</li>';
 
-			return result;
+			return html;
 		}
 
 		function generateList() {
@@ -265,23 +263,21 @@
 			channelList.innerHTML = html;
 		}
 
-		function generateListItem(channel) {
-			var result = '';
+		function generateListItem(channel, html) {
+			html += '<li class="item channel" data-channel="' + channel.name + '">';
+				html += '<h2>';
+					html += channel.displayName;
+					html += '<span class="favorite" data-favorite="' + channel.favorite + '"></span>';
+				html += '</h2>';
+				html += '<p class="audience">';
+					html += '<img class="icon" src="/img/audience.png">';
+					html += '<span class="followers">';
+						html += channel.formattedFollowers + ' followers';
+					html += '</span>';
+				html += '</p>';
+			html += '</li>';
 
-			result += '<li class="item channel" data-channel="' + channel.name + '">';
-				result += '<h2>';
-					result += channel.displayName;
-					result += '<span class="favorite" data-favorite="' + channel.favorite + '"></span>';
-				result += '</h2>';
-				result += '<p class="audience">';
-					result += '<img class="icon" src="/img/audience.png">';
-					result += '<span class="followers">';
-						result += channel.formattedFollowers + ' followers';
-					result += '</span>';
-				result += '</p>';
-			result += '</li>';
-
-			return result;
+			return html;
 		}
 
 		function generateList() {

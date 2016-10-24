@@ -24,6 +24,7 @@
 	"background": {
 		"persistent": true,
 		"scripts": [
+			"js/helpers.js",
 			"js/Browser.js",
 			"js/CollectionSorter.js",
 			"js/Collection.js",
@@ -31,6 +32,8 @@
 			"js/initializer.js",
 			"js/Ajax.js",
 			"js/Notifier.js",
+			"js/DictionarySorter.js",
+			"js/DictionaryOrder.js",
 			"js/ChannelsContainer.js",
 			"js/Updaters.js",
 			"js/TwitchTuner.js"

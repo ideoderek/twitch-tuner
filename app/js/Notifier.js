@@ -27,7 +27,7 @@ var Notifier = function(Config) {
 	})();
 
 	function getTitle(stream) {
-		return stream.channel.displayName + ' is live!';
+		return stream.displayName + ' is live!';
 	}
 
 	function getMessage(stream) {
@@ -69,7 +69,7 @@ var Notifier = function(Config) {
 			var item = {},
 				stream = streams[i];
 
-			item.title = stream.channel.displayName;
+			item.title = stream.displayName;
 
 			if (showGame && stream.game) {
 				item.message = stream.game;
@@ -101,7 +101,7 @@ var Notifier = function(Config) {
 		options.message = getMessage(stream);
 		options.contextMessage = getContextMessage(stream);
 
-		createNotification(stream.channel.name, options);
+		createNotification(stream.name, options);
 	}
 
 	function multiNotification(count, streams) {
@@ -161,7 +161,7 @@ var Notifier = function(Config) {
 			return false;
 		}
 
-		if (liveChannels.indexOf(stream.channel.name) === -1) {
+		if (liveChannels.indexOf(stream.name) === -1) {
 			return true;
 		}
 
@@ -172,7 +172,7 @@ var Notifier = function(Config) {
 		var count = Channels.countStreams();
 		updateBadge(count);
 
-		var streams = Channels.streams.values().filter(isAlertable);
+		var streams = Channels.filterStreams(isAlertable);
 		createNotifications(streams.length, streams);
 
 		liveChannels = Channels.streams.keys();
