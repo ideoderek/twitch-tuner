@@ -1,5 +1,5 @@
 var TwitchTuner = (function() {
-	var Channels = new ChannelsContainer();
+	var Channels = new ChannelContainer();
 
 	var exports = {
 		username: null,

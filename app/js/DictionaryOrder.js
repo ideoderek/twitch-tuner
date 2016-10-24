@@ -1,64 +1,68 @@
-function DictionaryOrder(dictionary, order, descriptor) {
-    if (order === undefined) {
-        order = Object.keys(dictionary);
-    }
-
+function DictionaryOrder(dictionary, order) {
     this.dictionary = dictionary;
-    this.order = order;
-    this.index = 0;
 
-    this.configure(descriptor);
+    this.order = order || [];
+    this.index = 0;
 }
+
+DictionaryOrder.prototype.keys = function() {
+    return this.order.slice();
+};
 
 DictionaryOrder.prototype.count = function() {
     return this.order.length;
 };
 
-DictionaryOrder.prototype.sort = function() {
-    if (this.order.length > 1) {
-        this.order = this.sorter.sort(this.order, this.dictionary);
+DictionaryOrder.prototype.add = function(key) {
+    if (hasElement(this.order, key)) {
+        return;
     }
+
+    addToSet(this.order, key);
 };
 
 DictionaryOrder.prototype.update = function(key) {
-    if (this.order.indexOf(key) === -1) {
-        this.order = this.sorter.insert(key, this.order, this.dictionary);
-    }
-    else {
-        this.order = this.sorter.update(key, this.order, this.dictionary);
+    this.sorter.update(key);
+};
+
+DictionaryOrder.prototype.remove = function(key) {
+    removeFromSet(this.order, key);
+};
+
+DictionaryOrder.prototype.sort = function() {
+    if (this.count() > 1) {
+        this.sorter.sort();
     }
 };
 
 DictionaryOrder.prototype.configure = function(descriptor) {
-    if (typeof descriptor !== 'object') {
-        return;
-    }
-
-    this.sorter.configure(descriptor);
+    this.sorter = new DictionarySorter(this.dictionary, this.order, descriptor);
 
     this.sort();
 };
 
-DictionaryOrder.prototype.next = function() {
-    this.index++;
+DictionaryOrder.prototype.reduce = function(reducer, value) {
+    var keys = this.order.slice();
 
-    if (this.index > this.count()) {
-        return undefined;
+    for (var i in keys) {
+        value = reducer(this.dictionary[keys[i]], value);
     }
 
-    if (this.outOfSync) {
-        throw null;
-    }
-
-    return this.dictionary[this.order[this.index]];
+    return value;
 };
 
-DictionaryOrder.prototype.remove = function(key) {
-    var index = this.order.indexOf(key);
+DictionaryOrder.prototype.filter = function(filter) {
+    var keys = this.order,
+        data = this.dictionary,
+        result = [];
 
-    if (index === -1) {
-        return;
+    for (var i in keys) {
+        var element = data[keys[i]];
+
+        if (filter(element)) {
+            result.push(element);
+        }
     }
 
-    this.order.splice(index, 1);
+    return result;
 };

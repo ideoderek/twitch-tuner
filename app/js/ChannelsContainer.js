@@ -1,164 +1,158 @@
-var ChannelsContainer = (function() {
-	function Channels() {
-		this.autoFavorite = Storage.get('Favorites_AutoByNotifications');
-		this.favorites = Storage.get('Favorites') || [];
+function ChannelContainer() {
+	this.autoFavorite = Storage.get('Favorites_AutoByNotifications');
+	this.favorites = Storage.get('Favorites') || [];
 
-		this.channels = new Collection(new Sorter());
-		this.streams = new Collection(new Sorter());
+	this.channelData = {};
 
-		this.channels.configureSorter(this.getSortParameters('Channels'));
-		this.streams.configureSorter(this.getSortParameters('Streams'));
+	this.channels = new DictionaryOrder(this.channelData);
+	this.channels.configure(this.getSortParameters('Channels'));
+	this.streams = new DictionaryOrder(this.channelData);
+	this.streams.configure(this.getSortParameters('Streams'));
+}
+
+ChannelContainer.prototype.clear = function() {
+    this.channels.clear();
+    this.streams.clear();
+};
+
+ChannelContainer.prototype.update = function(data, keys, update, remove) {
+	data.forEach(function(element) {
+		update(element);
+
+		removeFromSet(keys, element.channel.name);
+	});
+
+	keys.forEach(remove);
+};
+
+// Channels
+
+ChannelContainer.prototype.updateChannels = function(data) {
+	this.update(data, this.channels.keys(), this.updateChannel.bind(this), this.unfollow.bind(this));
+
+	this.channels.sort();
+};
+
+ChannelContainer.prototype.updateChannel = function(data) {
+	var channel = data.channel,
+		object = this.channelData[channel.name] || {name: channel.name};
+
+	object.displayName = channel.display_name;
+	object.followers = channel.followers;
+	object.formattedFollowers = channel.followers.toLocaleString();
+	object.favorite = this.isFavorite(name, data.notifications);
+
+	if (! (channel.name in this.channelData)) {
+		this.channelData[channel.name] = object;
 	}
 
-	Channels.prototype.countStreams = function() {
-	    return this.streams.count();
+	this.channels.add(channel.name);
+};
+
+ChannelContainer.prototype.unfollow = function(channelName) {
+	delete this.channelData[channelName];
+
+	this.channels.remove(channelName);
+	this.streams.remove(channelName);
+};
+
+ChannelContainer.prototype.countChannels = function() {
+	return this.channels.count();
+};
+
+ChannelContainer.prototype.getChannelNames = function() {
+    return this.channels.keys();
+};
+
+// Streams
+
+ChannelContainer.prototype.updateStreams = function(data) {
+	this.update(data, this.streams.keys(), this.updateStream.bind(this), this.offline.bind(this));
+
+	this.streams.sort();
+};
+
+ChannelContainer.prototype.updateStream = function(data) {
+	var object = this.channelData[data.channel.name];
+
+	object.game = data.game || null;
+	object.viewers = data.viewers;
+	object.formattedViewers = data.viewers.toLocaleString();
+	object.description = data.channel.status;
+	object.preview = data.preview.medium;
+
+	this.streams.add(data.channel.name);
+};
+
+ChannelContainer.prototype.offline = function(channelName) {
+	this.streams.remove(channelName);
+
+	var channel = this.channelData[channelName];
+	delete channel.game;
+	delete channel.viewers;
+	delete channel.formattedViewers;
+	delete channel.description;
+	delete channel.preview;
+};
+
+ChannelContainer.prototype.countStreams = function() {
+	return this.streams.count();
+};
+
+ChannelContainer.prototype.getSortParameters = function(type) {
+	var listener = this.setSortParameter.bind(this);
+
+	return {
+		SortAttribute: Storage.get(type + '_SortAttribute', listener),
+		SortDescending: Storage.get(type + '_SortDescending', listener),
+		GroupAttribute: Storage.get(type + '_GroupAttribute', listener),
+		GroupDescending: Storage.get(type + '_GroupDescending', listener)
 	};
+};
 
-	Channels.prototype.countChannels = function() {
-	    return this.channels.count();
-	};
+ChannelContainer.prototype.setSortParameter = function(value, name) {
+	console.log('ChannelContainer.setSortParameter(', value, name, ')');
+	var parameter = name.split('_'),
+		descriptor = {};
 
-	Channels.prototype.getChannelNames = function() {
-	    return this.channels.keys();
-	};
+	descriptor[parameter[1]] = value;
 
-	Channels.prototype.getSortParameters = function(type) {
-		var listener = this.setSortParameter.bind(this);
+	this[parameter[0].toLowerCase()].configureSorter(descriptor);
+};
 
-		return {
-			SortAttribute: Storage.get(type + '_SortAttribute', listener),
-			SortDescending: Storage.get(type + '_SortDescending', listener),
-			GroupAttribute: Storage.get(type + '_GroupAttribute', listener),
-			GroupDescending: Storage.get(type + '_GroupDescending', listener)
-		};
-	};
+// I hate that this query method has a side-effect
+ChannelContainer.prototype.isFavorite = function(channelName, notifications) {
+	if (hasElement(this.favorites, channelName)) {
+		return true;
+	}
 
-	Channels.prototype.setSortParameter = function(value, name) {
-		console.log('Channels.setSortParameter(', value, name, ')');
-		var parameter = name.split('_'),
-			descriptor = {};
+	if (this.autoFavorite && notifications) {
+		this.favorites.push(channelName);
 
-		descriptor[parameter[1]] = value;
+		return true;
+	}
 
-		this[parameter[0].toLowerCase()].configureSorter(descriptor);
-	};
+	return false;
+};
 
-	Channels.prototype.reset = function() {
-	    this.channels.clear();
-	    this.streams.clear();
-	};
+ChannelContainer.prototype.favorite = function(channelName, favorite) {
+	this.channelData[channelName].favorite = favorite;
 
-	Channels.prototype.isFavorite = function(channel, notifications) {
-		if (this.favorites.indexOf(channel) !== -1) {
-			return true;
-		}
+	this.channels.update(channelName);
+	this.streams.update(channelName);
 
-		if (this.autoFavorite && notifications) {
-			this.favorites.push(channel);
+	toggleInSet(this.favorites, channelName, favorite);
+	Storage.set('Favorites', this.favorites);
+};
 
-			return true;
-		}
+ChannelContainer.prototype.reduceChannels = function() {
+	return this.channels.reduce.apply(this.channels, arguments);
+};
 
-		return false;
-	};
+ChannelContainer.prototype.reduceStreams = function() {
+	return this.streams.reduce.apply(this.streams, arguments);
+};
 
-	Channels.prototype.favorite = function(channelName, favorite) {
-		var index = this.favorites.indexOf(channelName);
-
-		this.channels.act(channelName, 'favorite', favorite);
-		this.streams.act(channelName, 'favorite', favorite);
-
-		if (favorite && index === -1) {
-			this.favorites.push(channelName);
-		}
-		else if (! favorite && index !== -1) {
-			this.favorites.splice(index, 1);
-		}
-
-		Storage.set('Favorites', this.favorites);
-	};
-
-	Channels.prototype.reduceChannels = function() {
-		return this.channels.reduce.apply(this.channels, arguments);
-	};
-
-	Channels.prototype.reduceStreams = function() {
-		return this.streams.reduce.apply(this.streams, arguments);
-	};
-
-	Channels.prototype.unfollow = function(name) {
-		this.channels.unset(name);
-		this.streams.unset(name);
-	};
-
-	Channels.prototype.updateChannel = function(name, data) {
-		var channel = data.channel;
-
-		this.channels.set(name, {
-			name: name,
-			displayName: channel.display_name,
-			followers: channel.followers,
-			formattedFollowers: channel.followers.toLocaleString(),
-			favorite: this.isFavorite(name, data.notifications)
-		});
-	};
-
-	Channels.prototype.updateChannels = function(channels) {
-		var unfollowed = this.getChannelNames();
-
-		for (var i in channels) {
-			var channel = channels[i],
-				name = channel.channel.name;
-
-			this.updateChannel(name, channel);
-
-			var index = unfollowed.indexOf(name);
-			if (index !== -1) {
-				unfollowed.splice(index, 1);
-			}
-		}
-
-		unfollowed.forEach(this.unfollow, this);
-	};
-
-	Channels.prototype.offline = function(name) {
-		this.streams.unset(name);
-	};
-
-	Channels.prototype.updateStream = function(name, data) {
-		var stream = this.streams.get(name);
-
-		if (stream === undefined) {
-			stream = {channel: this.channels.get(name)};
-		}
-
-		stream.game = data.game ? data.game : null;
-		stream.viewers = data.viewers;
-		stream.formattedViewers = data.viewers.toLocaleString();
-		stream.description = data.channel.status;
-		stream.preview = data.preview.medium;
-		stream.favorite = stream.channel.favorite;
-
-		this.streams.set(name, stream);
-	};
-
-	Channels.prototype.updateStreams = function(streams) {
-		var offline = this.streams.keys();
-
-		for (var i in streams) {
-			var stream = streams[i],
-				name = stream.channel.name;
-
-			this.updateStream(name, stream);
-
-			var index = offline.indexOf(name);
-			if (index !== -1) {
-				offline.splice(index, 1);
-			}
-		}
-
-		offline.forEach(this.offline, this);
-	};
-
-	return Channels;
-})();
+ChannelContainer.prototype.filterStreams = function() {
+    return this.streams.filter.apply(this.streams, arguments);
+};
