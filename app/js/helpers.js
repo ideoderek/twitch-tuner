@@ -34,3 +34,7 @@ function toggleInSet(arr, element, add) {
 		removeFromSet(arr, element);
 	}
 }
+
+function middle(length) {
+	return Math.floor(length / 2);
+}
