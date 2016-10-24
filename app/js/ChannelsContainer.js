@@ -156,3 +156,7 @@ ChannelContainer.prototype.reduceStreams = function() {
 ChannelContainer.prototype.filterStreams = function() {
     return this.streams.filter.apply(this.streams, arguments);
 };
+
+ChannelContainer.prototype.get = function(channelName) {
+	return this.channelData[channelName];
+};

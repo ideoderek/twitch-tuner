@@ -198,7 +198,7 @@
 
 		function generatePreview(channelName) {
 			console.log('generatePreview(',channelName,')');
-			var stream = Channels.streams.get(channelName),
+			var stream = Channels.get(channelName),
 				html = '<div class="preview" data-description="' + stream.description + '">';
 
 			html += '<img src="' + stream.preview + '">';
