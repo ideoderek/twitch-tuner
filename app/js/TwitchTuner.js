@@ -147,8 +147,9 @@ var TwitchTuner = (function() {
 	exports.completeFollowsUpdate = function(follows) {
 		console.groupEnd();
 		this.updater = null;
-
+console.time('Channels.updateChannels');
 		Channels.updateChannels(follows);
+console.timeEnd('Channels.updateChannels');
 
 		this.notify({
 			channels: null,
@@ -188,8 +189,9 @@ var TwitchTuner = (function() {
 	exports.completeStreamsUpdate = function(streams) {
 		console.groupEnd();
 		this.updater = null;
-
+console.time('Channels.updateStreams');
 		Channels.updateStreams(streams);
+console.timeEnd('Channels.updateStreams');
 
 		Notifier(Channels);
 
