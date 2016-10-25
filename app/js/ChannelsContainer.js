@@ -35,18 +35,19 @@ ChannelContainer.prototype.updateChannels = function(data) {
 
 ChannelContainer.prototype.updateChannel = function(data) {
 	var channel = data.channel,
-		object = this.channelData[channel.name] || {name: channel.name};
+		name = channel.name,
+		object = this.channelData[name] || {name: name};
 
 	object.displayName = channel.display_name;
 	object.followers = channel.followers;
 	object.formattedFollowers = channel.followers.toLocaleString();
 	object.favorite = this.isFavorite(name, data.notifications);
 
-	if (! (channel.name in this.channelData)) {
-		this.channelData[channel.name] = object;
+	if (! (name in this.channelData)) {
+		this.channelData[name] = object;
 	}
 
-	this.channels.add(channel.name);
+	this.channels.add(name);
 };
 
 ChannelContainer.prototype.unfollow = function(channelName) {
