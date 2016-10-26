@@ -51,25 +51,23 @@ DictionarySorter.prototype.generateSorter = function(groupAttribute, groupDescen
 
 /* This could be sped up significantly, but is not get called often. */
 DictionarySorter.prototype.update = function(key) {
-	var index = this.order.indexOf(key);
+	var keys = this.order,
+		index = keys.indexOf(key),
+		data = this.dictionary;
 
 	if (index === -1) {
 		return;
 	}
 
-	this.order.splice(index, 1);
+	keys.splice(index, 1);
 
-	var data = this.dictionary,
-		order = this.order,
-		length = order.length;
-
-	for (var i = 0; i < length; i++) {
-		if (this.compare(data[key], data[i]) >= 0) {
+	for (var i in keys) {
+		if (this.compare(data[key], data[keys[i]]) >= 0) {
 			break;
 		}
 	}
 
-	order.splice(i, 0, key);
+	keys.splice(i, 0, key);
 };
 
 /* This method uses a (probably poorly-implemented) insertion sort.
