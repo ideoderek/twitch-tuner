@@ -40,7 +40,7 @@ DictionarySorter.prototype.generateSorter = function(groupAttribute, groupDescen
 		bAttr = b[sortAttribute];
 
 		if (aAttr !== bAttr) {
-			result = aAttr < bAttr ? 1 : -1;
+			result = aAttr > bAttr ? 1 : -1;
 			result = typeof aAttr === 'string' ? -result : result;
 			return sortDescending ? -result : result;
 		}
