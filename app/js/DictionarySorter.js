@@ -17,10 +17,10 @@ DictionarySorter.prototype.configure = function(descriptor) {
 	}
 
 	this.generateSorter(
-		this.descriptor.SortAttribute,
-		this.descriptor.SortDescending,
 		this.descriptor.GroupAttribute,
-		this.descriptor.GroupDescending
+		this.descriptor.GroupDescending,
+		this.descriptor.SortAttribute,
+		this.descriptor.SortDescending
 	);
 };
 
@@ -49,7 +49,7 @@ DictionarySorter.prototype.generateSorter = function(groupAttribute, groupDescen
 	};
 };
 
-/* This could be sped up significantly, but is not get called often. */
+/* This could be sped up significantly, but is not called often. */
 DictionarySorter.prototype.update = function(key) {
 	var keys = this.order,
 		index = keys.indexOf(key),
@@ -70,7 +70,7 @@ DictionarySorter.prototype.update = function(key) {
 	keys.splice(i, 0, key);
 };
 
-/* This method uses a (probably poorly-implemented) insertion sort.
+/*	This method uses a (probably poorly-implemented) insertion sort.
 	Insertion sort runs especially quickly on nearly sorted data.
 	Making it well-suited to sorting channels/streams after the first update.
 	Heap sort would probably be a better solution for the initial update. */
