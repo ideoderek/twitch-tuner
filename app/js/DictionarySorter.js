@@ -63,11 +63,13 @@ DictionarySorter.prototype.update = function(key) {
 
 	for (var i in keys) {
 		if (this.compare(data[key], data[keys[i]]) <= 0) {
-			break;
+			keys.splice(i, 0, key);
+
+			return;
 		}
 	}
 
-	keys.splice(i, 0, key);
+	keys.splice(keys.length, 0, key);
 };
 
 /*	This method uses a (probably poorly-implemented) insertion sort.
