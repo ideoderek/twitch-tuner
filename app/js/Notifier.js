@@ -83,12 +83,12 @@ var Notifier = function(Storage, Browser) {
 		return '';
 	}
 
-	function getItems(count, streams) {
+	function getItems(streamCount, streams) {
 		var items = [];
 
-		count = count < 5 ? count : 5;
+		streamCount = streamCount < 5 ? streamCount : 5;
 
-		for (var i = 0; i < count; i++) {
+		for (var i = 0; i < streamCount; i++) {
 			var item = {},
 				stream = streams[i];
 
@@ -197,11 +197,12 @@ var Notifier = function(Storage, Browser) {
 
 	return function(channels) {
 		count = channels.countStreams();
-		liveChannels = channels.streams.keys();
 
 		updateBadge();
+		createNotifications(channels.filterStreams(isAlertable));
 
-		var streams = channels.filterStreams(isAlertable);
-		createNotifications(streams.length, streams);
+		// This has to happen after the call to createNotifications
+		// or else isAlertable will always return false
+		liveChannels = channels.getLiveChannelNames();
 	};
 }(Storage, Browser);
