@@ -100,6 +100,10 @@ ChannelContainer.prototype.countStreams = function() {
 	return this.streams.count();
 };
 
+ChannelContainer.prototype.getLiveChannelNames = function() {
+    return this.streams.keys();
+};
+
 ChannelContainer.prototype.getSortParameters = function(type) {
 	var listener = this.setSortParameter.bind(this);
 
