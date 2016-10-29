@@ -1,4 +1,4 @@
-var Notifier = function() {
+var Notifier = function(Storage, Browser) {
 	var q = {
 		check: function(name, then) {
 			if (Storage.get(name) === true) {
@@ -27,7 +27,10 @@ var Notifier = function() {
 		},
 	};
 
-	var liveChannels = [];
+	Storage.listen('Badge_Enabled', updateBadge)
+
+	var liveChannels = [],
+		count = 0;
 
 	var commonOptions = function() {
 		return {
@@ -124,33 +127,39 @@ var Notifier = function() {
 		createNotification(stream.name, options);
 	}
 
-	function multiNotification(count, streams) {
-		var options = commonOptions();
+	function multiNotification(streams) {
+		var streamCount = streams.length,
+			options = commonOptions();
 		options.type = 'list';
-		options.title = count + ' channels are now live!';
+		options.title = streamCount + ' channels are now live!';
 
-		if (count > 5) {
-			options.contextMessage = 'and ' + (count - 5) + ' more!';
+		if (streamCount > 5) {
+			options.contextMessage = 'and ' + (streamCount - 5) + ' more!';
 		}
 
-		options.items = getItems(count, streams);
+		options.items = getItems(streamCount, streams);
 
 		createNotification('multi_' + generateId(), options);
 	}
 
-	function updateBadge(count) {
+	function updateBadge() {
 		if (q.badgeEnabled) {
 			Browser.badge(count, '#6441A5');
 		}
+
+		else {
+			// This will effectively disable the badge
+			Browser.badge('');
+		}
 	}
 
-	function createNotifications(count, streams) {
+	function createNotifications(streams) {
 		if (! q.notificationsEnabled) {
 			return;
 		}
 
-		if (count > 3) {
-			multiNotification(count, streams);
+		if (streams.length > 3) {
+			multiNotification(streams);
 		}
 		else {
 			streams.forEach(singleNotification);
@@ -187,11 +196,12 @@ var Notifier = function() {
 	}
 
 	return function(channels) {
-		updateBadge(channels.countStreams());
+		count = channels.countStreams();
+		liveChannels = channels.streams.keys();
+
+		updateBadge();
 
 		var streams = channels.filterStreams(isAlertable);
 		createNotifications(streams.length, streams);
-
-		liveChannels = channels.streams.keys();
 	};
-}();
+}(Storage, Browser);
