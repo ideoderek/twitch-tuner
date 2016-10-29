@@ -1,11 +1,31 @@
-var Notifier = function(Config) {
-	var emptyCallback = function() {},
-		notificationsEnabled = Config.get('Notifications_Enabled'),
-		badgeEnabled = Config.get('Badge_Enabled'),
-		showGame = Config.get('Notifications_ShowGame'),
-		showViewers = Config.get('Notifications_ShowViewers'),
-		showDescription = Config.get('Notifications_ShowDescription'),
-		favoritesOnly = Config.get('Notifications_FavoritesOnly');
+var Notifier = function() {
+	var q = {
+		check: function(name, then) {
+			if (Storage.get(name) === true) {
+				return true;
+			}
+
+			return false;
+		},
+		get badgeEnabled() {
+			return this.check('Badge_Enabled');
+		},
+		get notificationsEnabled() {
+			return this.check('Notifications_Enabled');
+		},
+		get showGame() {
+			return this.check('Notifications_ShowGame');
+		},
+		get showViewers() {
+			return this.check('Notifications_ShowViewers');
+		},
+		get showDescription() {
+			return this.check('Notifications_ShowDescription');
+		},
+		get favoritesOnly() {
+			return this.check('Notifications_FavoritesOnly');
+		},
+	};
 
 	var liveChannels = [];
 
@@ -33,11 +53,11 @@ var Notifier = function(Config) {
 	function getMessage(stream) {
 		var message = [];
 
-		if (showGame && stream.game) {
+		if (q.showGame && stream.game) {
 			message.push(stream.game);
 		}
 
-		if (showViewers) {
+		if (q.showViewers) {
 			var end = stream.formattedViewers === 1 ? 'viewer' : 'viewers';
 
 			message.push('for ' + stream.formattedViewers + ' ' + end);
@@ -53,7 +73,7 @@ var Notifier = function(Config) {
 	}
 
 	function getContextMessage(stream) {
-		if (showDescription) {
+		if (q.showDescription) {
 			return stream.description;
 		}
 
@@ -71,13 +91,13 @@ var Notifier = function(Config) {
 
 			item.title = stream.displayName;
 
-			if (showGame && stream.game) {
+			if (q.showGame && stream.game) {
 				item.message = stream.game;
 			}
-			else if (showViewers) {
+			else if (q.showViewers) {
 				item.message = stream.formattedViewers + ' viewers';
 			}
-			else if (showDescription) {
+			else if (q.showDescription) {
 				item.message = stream.description;
 			}
 			else {
@@ -119,15 +139,13 @@ var Notifier = function(Config) {
 	}
 
 	function updateBadge(count) {
-		if (! badgeEnabled) {
-			return;
+		if (q.badgeEnabled) {
+			Browser.badge(count, '#6441A5');
 		}
-
-		Browser.badge(count, '#6441A5');
 	}
 
 	function createNotifications(count, streams) {
-		if (! notificationsEnabled || count === 0) {
+		if (! q.notificationsEnabled) {
 			return;
 		}
 
@@ -157,7 +175,7 @@ var Notifier = function(Config) {
 	chrome.notifications.onClicked.addListener(onNotificationClick);
 
 	function isAlertable(stream) {
-		if (favoritesOnly && ! stream.favorite) {
+		if (q.favoritesOnly && ! stream.favorite) {
 			return false;
 		}
 
@@ -168,13 +186,12 @@ var Notifier = function(Config) {
 		return false;
 	}
 
-	return function(Channels) {
-		var count = Channels.countStreams();
-		updateBadge(count);
+	return function(channels) {
+		updateBadge(channels.countStreams());
 
-		var streams = Channels.filterStreams(isAlertable);
+		var streams = channels.filterStreams(isAlertable);
 		createNotifications(streams.length, streams);
 
-		liveChannels = Channels.streams.keys();
+		liveChannels = channels.streams.keys();
 	};
-}(Storage);
+}();
