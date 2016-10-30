@@ -67,7 +67,7 @@ var Notifier = function(Storage, Browser) {
 		}
 
 		if (message.length > 0) {
-			message.unshift('Playing');
+			message.unshift('Streaming');
 
 			return message.join(' ');
 		}
@@ -121,8 +121,15 @@ var Notifier = function(Storage, Browser) {
 		var options = commonOptions();
 		options.type = 'basic';
 		options.title = getTitle(stream);
-		options.message = getMessage(stream);
-		options.contextMessage = getContextMessage(stream);
+
+		var message = getMessage(stream);
+		if (message) {
+			options.message = message;
+			options.contextMessage = getContextMessage(stream);
+		}
+		else {
+			options.message = getContextMessage(stream);
+		}
 
 		createNotification(stream.name, options);
 	}
