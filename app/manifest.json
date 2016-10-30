@@ -7,7 +7,7 @@
 	"homepage_url": "https://github.com/ideoderek/twitch-tuner",
 
 	"version": "0.1.0",
-	"version_name": "October 2, 2016 (version 0.1.0)",
+	"version_name": "October 30, 2016 (version 0.1.0)",
 
 	"minimum_chrome_version": "28",
 
@@ -26,8 +26,6 @@
 		"scripts": [
 			"js/helpers.js",
 			"js/Browser.js",
-			"js/CollectionSorter.js",
-			"js/Collection.js",
 			"js/Storage.js",
 			"js/initializer.js",
 			"js/Ajax.js",
