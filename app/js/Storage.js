@@ -97,19 +97,22 @@ var Storage = {
 		}
 	},
 	notifiable: function(key) {
-		if (key in this.listeners && this.listeners[key]) {
+		if (! (key in this.listeners) || ! (0 in this.listeners[key])) {
+			return false;
+		}
+
+		if (typeof this.listeners[key][0] === 'function') {
 			return true;
 		}
 
 		return false;
 	},
 	notify: function(key, value) {
-		if (! (key in this.listeners)) {
+		if (! this.notifiable(key)) {
 			return;
 		}
 
 		var listeners = this.listeners[key];
-
 		for (var i in listeners) {
 			listeners[i](value, key);
 		}
