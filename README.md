@@ -3,7 +3,7 @@ Twitch Tuner
 
 A Chrome extension that notifies users when their favorite Twitch.tv streamers are live.
 
-Current version: `0.1.0` October 2, 2016
+Current version: `0.1.0` October 30, 2016
 
 Attribution
 -----------
@@ -19,18 +19,18 @@ The Twitch Tuner repository only contains the extension's source files, in the `
 2. Install npm
 3. Run `npm install` in the root directory
 
-Now you are ready to build the extension. There are two ways to do this. You can do `npm run pack` to do a one-time build, or `npm run watch-pack` to watch for changes to the source files and automatically build the extension.
+Now you are ready to build the extension. There are two ways to do this. You can do `npm run pack` to perform a one-time build. Or you can do `npm run watch-pack` to watch for changes to the source files and automatically build the extension when they occur.
 
-Either way, a new folder will be created called `pkg` containing the built extension.
+Both methods will create a directory called `pkg` containing the built extension.
 
 To run the built extension in Chrome:
 
 1. Navigate to [`chrome://extensions`](chrome://extensions)
-2. Make sure that the "Developer mode" checkbox is selected
+2. Ensure that the "Developer mode" checkbox is selected
 3. Click the "Load unpacked extension..." button
 4. Select the `pkg` directory and click "OK"
 
-The extension should now be loaded into Chrome. If you make changes to anything other than the popup, you will have to reload the extension by clicking the "Reload" button in Chrome.
+The extension should now be loaded into Chrome. To view any changes you make to the source files, reload the extension by clicking the "Reload" button in Chrome.
 
 Contributing
 ------------
