@@ -3,7 +3,7 @@ var Browser = (function() {
 
 	var emptyCallback = function(){};
 
-	var storage = {
+	exports.storage = {
 		get: function(key) {
 			var value;
 
@@ -38,8 +38,6 @@ var Browser = (function() {
 			localStorage.clear();
 		}
 	};
-
-	exports.storage = storage;
 
 	exports.open = function(url) {
 		chrome.tabs.create({url: url});
