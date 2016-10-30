@@ -1,5 +1,6 @@
 function ChannelContainer() {
 	this.autoFavorite = Storage.get('Favorites_AutoByNotifications');
+	Storage.listen('Favorites_AutoByNotifications', this.setAutoFavoriting.bind(this));
 	this.favorites = Storage.get('Favorites') || [];
 
 	this.channelData = {};
@@ -9,6 +10,10 @@ function ChannelContainer() {
 	this.streams = new DictionaryOrder(this.channelData);
 	this.streams.configure(this.getSortParameters('Streams'));
 }
+
+ChannelContainer.prototype.setAutoFavoriting = function(value) {
+	this.autoFavorite = value;
+};
 
 ChannelContainer.prototype.clear = function() {
     this.channels.clear();
