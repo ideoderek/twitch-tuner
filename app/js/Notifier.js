@@ -92,7 +92,8 @@ var Notifier = function(Storage, Browser) {
 			var item = {},
 				stream = streams[i];
 
-			item.title = stream.displayName;
+			item.title = stream.favorite ? '\u2661' : '>';
+			item.title + = ' ' + stream.displayName;
 
 			if (q.showGame && stream.game) {
 				item.message = stream.game;
