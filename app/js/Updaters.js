@@ -9,7 +9,6 @@
 
 	global.FollowsUpdater = (function() {
 		function Updater(username, onSuccess, onFailure) {
-			console.groupCollapsed('Updating follows');
 			this.baseUrl = API_BASE_URL + '/users/' + username + '/follows/channels?limit=100&offset=';
 			this.succeed = onSuccess;
 			this.fail = onFailure;
@@ -41,13 +40,9 @@
 				.failure(this.fail.bind(this));
 
 			this.currentRequest.get();
-
-			console.log(this.currentRequest);
 		};
 
 		Updater.prototype.parse = function(status, response) {
-			console.log('API response status code: ' + status);
-
 			if (status !== 200) {
 				return this.fail(status);
 			}
@@ -55,15 +50,12 @@
 			response = JSON.parse(response);
 
 			if (this.changed(response)) {
-				console.log('Total number of follows changed, restarting update.');
 				return this.start();
 			}
 
 			this.updateResult(response.follows);
 
 			if (this.finished()) {
-				console.log('Complete');
-				console.groupEnd();
 				return this.succeed(this.result);
 			}
 
@@ -76,7 +68,6 @@
 			// Not worth it.
 			if (this.total === null) {
 				this.total = current._total;
-				console.log('Changed this.total to:', this.total);
 			}
 			else if (this.total !== current._total) {
 				return true;
@@ -95,11 +86,9 @@
 
 		Updater.prototype.updateResult = function(follows) {
 			this.result = this.result.concat(follows);
-			console.log('Updated result:', this.result);
 		};
 
 		Updater.prototype.abort = function() {
-			console.groupEnd();
 			this.currentRequest.abort();
 		};
 
@@ -108,7 +97,6 @@
 
 	global.StreamsUpdater = (function() {
 		function Updater(channels, onSuccess, onFailure) {
-			console.groupCollapsed('Updating streams');
 			this.channels = channels.slice();
 			this.succeed = onSuccess;
 			this.fail = onFailure;
@@ -141,7 +129,6 @@
 		};
 
 		Updater.prototype.parse = function(status, response) {
-			console.log('API response status code:', status);
 			if (status !== 200) {
 				return this.fail(status, this.result);
 			}
@@ -151,8 +138,6 @@
 			this.updateResult(response.streams);
 
 			if (this.channels.length === 0) {
-				console.log('Complete');
-				console.groupEnd();
 				return this.succeed(this.result);
 			}
 
@@ -161,7 +146,6 @@
 
 		Updater.prototype.updateResult = function(streams) {
 			this.result = this.result.concat(streams);
-			console.log('Updated result:', this.result);
 		};
 
 		Updater.prototype.handleRequestError = function() {
@@ -169,7 +153,6 @@
 		};
 
 		Updater.prototype.abort = function() {
-			console.groupEnd();
 			this.currentRequest.abort();
 		};
 

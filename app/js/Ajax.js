@@ -16,7 +16,6 @@ var Ajax = (function() {
 	AjaxRequest.prototype.delay = 1000;
 
 	AjaxRequest.prototype.onerror = function() {
-		console.warn('AjaxRequest.onerror [retries:', this.retries, ']');
 		if (this.retries === 0) {
 			this.failure();
 		}

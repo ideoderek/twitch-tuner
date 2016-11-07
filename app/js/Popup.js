@@ -40,7 +40,6 @@
 		}
 
 		function update() {
-			console.log('updating timer');
 			var updating = data.updating,
 				time = data.updatedAt;
 
@@ -138,9 +137,8 @@
 	}, false);
 
 	function toggleFavorite(element, channel) {
-		console.log('toggleFavorite(', element, channel, ')');
 		var favorited = element.getAttribute('data-favorite') === 'true' ? true : false;
-		console.log('favorited?', favorited);
+
 		Channels.favorite(channel, ! favorited);
 
 		element.setAttribute('data-favorite', ! favorited);
@@ -197,7 +195,6 @@
 		}
 
 		function generatePreview(channelName) {
-			console.log('generatePreview(',channelName,')');
 			var stream = Channels.get(channelName),
 				html = '<div class="preview" data-description="' + stream.description + '">';
 
@@ -332,8 +329,6 @@
 			}
 		},
 		title: function(type) {
-			console.log('Tabs.title(', type, ')');
-			console.log('data:', data);
 			var title;
 
 			if (type === 'streams') {
@@ -342,11 +337,10 @@
 			else if (type === 'channels') {
 				title = Channels.countChannels() + ' Channels';
 			}
-			console.info(title);
+
 			this.tabs[type].tab.innerHTML = title;
 		},
 		update: function(type) {
-			console.log('Tabs.update(', type, ')');
 			var tab = this.tabs[type];
 
 			this.title(type);
@@ -406,7 +400,6 @@
 	}, false);
 
 	function processUpdate(type, value) {
-		console.log('processUpdate(', type, ')');
 		if (type === 'streams' || type === 'channels') {
 			Tabs.update(type);
 		}
@@ -421,7 +414,6 @@
 	}
 
 	chrome.runtime.onMessage.addListener(function(message) {
-		console.log('Message received:', message);
 		for (var key in message) {
 			processUpdate(key, message[key]);
 		}

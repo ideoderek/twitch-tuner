@@ -95,7 +95,7 @@ var TwitchTuner = (function() {
 			this.username = username;
 		}
 
-		// Clear the badge so the previous stream count isn't displayed
+		// Clear the badge so the previous stream count is not displayed
 		Browser.badge('');
 
 		this.update();
@@ -128,11 +128,10 @@ var TwitchTuner = (function() {
 		}
 
 		this.cancelUpdate();
-		console.groupEnd();
+
 		this.updating = true;
 		this.notify({updating: true});
 
-		console.group('Updating');
 		this.updateFollows(this.username);
 	};
 
@@ -145,11 +144,9 @@ var TwitchTuner = (function() {
 	};
 
 	exports.completeFollowsUpdate = function(follows) {
-		console.groupEnd();
 		this.updater = null;
-console.time('Channels.updateChannels');
+
 		Channels.updateChannels(follows);
-console.timeEnd('Channels.updateChannels');
 
 		this.notify({
 			channels: null,
@@ -160,8 +157,6 @@ console.timeEnd('Channels.updateChannels');
 	};
 
 	exports.failFollowsUpdate = function(status) {
-		console.groupEnd();
-		console.warn('failFollowsUpdate');
 		this.updater = null;
 		this.updating = false;
 		this.notify({updating: false});
@@ -187,11 +182,9 @@ console.timeEnd('Channels.updateChannels');
 	};
 
 	exports.completeStreamsUpdate = function(streams) {
-		console.groupEnd();
 		this.updater = null;
-console.time('Channels.updateStreams');
+
 		Channels.updateStreams(streams);
-console.timeEnd('Channels.updateStreams');
 
 		Notifier(Channels);
 
@@ -203,9 +196,6 @@ console.timeEnd('Channels.updateStreams');
 	};
 
 	exports.failStreamsUpdate = function() {
-		console.groupEnd();
-		console.warn('failStreamsUpdate');
-
 		this.updater = null;
 		this.updating = false;
 		this.notify({updating: false});
@@ -214,8 +204,6 @@ console.timeEnd('Channels.updateStreams');
 	};
 
 	exports.completeUpdate = function() {
-		console.groupEnd();
-
 		this.updatedAt = (new Date()).valueOf();
 		this.updating = false;
 
@@ -225,54 +213,6 @@ console.timeEnd('Channels.updateStreams');
 		});
 
 		this.timer = setTimeout(this.update.bind(this), 1000 * 60 * 5);
-	};
-
-	exports.debug = function(type, test) {
-		switch(type) {
-			case 'streams':
-				this.debugStreams(test);
-				break;
-			case 'channels':
-				this.debugChannels(test);
-				break;
-			case 'updating':
-				this.debugUpdating(test);
-				break;
-		}
-	};
-
-	exports.debugChannels = function(test) {
-		switch(test) {
-			case 'empty':
-				Channels.channelNames = [];
-				Channels.channels = {};
-				console.log('Channels emptied');
-				break;
-			case 'view':
-				console.log(Channels);
-				break;
-		}
-	};
-
-	exports.debugStreams = function(test) {
-		switch(test) {
-			case 'empty':
-				Channels.live = [];
-				Channels.streams = {};
-				console.log('Streams emptied');
-				break;
-			case 'view':
-				console.log(Channels);
-				break;
-		}
-	};
-
-	exports.debugUpdating = function(seconds) {
-		this.notify({updating: true});
-
-		window.setTimeout(function() {
-			exports.notify({updating: false});
-		}, seconds * 1000);
 	};
 
 	exports.init();

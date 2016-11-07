@@ -121,7 +121,6 @@ ChannelContainer.prototype.getSortParameters = function(type) {
 };
 
 ChannelContainer.prototype.setSortParameter = function(value, name) {
-	console.log('ChannelContainer.setSortParameter(', value, name, ')');
 	var parameter = name.split('_'),
 		descriptor = {};
 
