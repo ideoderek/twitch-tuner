@@ -1,16 +1,14 @@
-function DictionarySorter(dictionary, order, descriptor) {
-	this.dictionary = dictionary;
-	this.order = order;
-
-	this.descriptor = {};
-
+function DictionarySorter(descriptor) {
 	this.configure(descriptor);
 }
 
+DictionarySorter.prototype.define = function(dictionary, order) {
+	this.dictionary = dictionary;
+	this.order = order;
+};
+
 DictionarySorter.prototype.configure = function(descriptor) {
-	if (descriptor === undefined) {
-		return;
-	}
+	this.descriptor = this.descriptor === undefined ? {} : this.descriptor;
 
 	for (var key in descriptor) {
 		this.descriptor[key] = descriptor[key];

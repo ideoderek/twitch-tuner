@@ -5,10 +5,8 @@ function ChannelContainer() {
 
 	this.channelData = {};
 
-	this.channels = new DictionaryOrder(this.channelData);
-	this.channels.configure(this.getSortParameters('Channels'));
-	this.streams = new DictionaryOrder(this.channelData);
-	this.streams.configure(this.getSortParameters('Streams'));
+	this.channels = new DictionaryOrder(this.channelData, this.getSortParameters('Channels'));
+	this.streams = new DictionaryOrder(this.channelData, this.getSortParameters('Streams'));
 }
 
 ChannelContainer.prototype.setAutoFavoriting = function(value) {
@@ -16,8 +14,10 @@ ChannelContainer.prototype.setAutoFavoriting = function(value) {
 };
 
 ChannelContainer.prototype.clear = function() {
-    this.channels.clear();
-    this.streams.clear();
+	this.channelData = {};
+
+    this.channels.reset(this.channelData);
+    this.streams.reset(this.channelData);
 };
 
 ChannelContainer.prototype.update = function(data, keys, update, remove) {

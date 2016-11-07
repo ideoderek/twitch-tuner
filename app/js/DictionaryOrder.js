@@ -1,9 +1,16 @@
-function DictionaryOrder(dictionary, order) {
+function DictionaryOrder(dictionary, descriptor) {
+    this.sorter = new DictionarySorter(descriptor);
+    this.reset(dictionary);
+}
+
+DictionaryOrder.prototype.reset = function(dictionary) {
     this.dictionary = dictionary;
 
-    this.order = order || [];
+    this.order = [];
     this.index = 0;
-}
+
+    this.sorter.define(this.dictionary, this.order);
+};
 
 DictionaryOrder.prototype.keys = function() {
     return this.order.slice();
@@ -35,8 +42,8 @@ DictionaryOrder.prototype.sort = function() {
     }
 };
 
-DictionaryOrder.prototype.configure = function(descriptor) {
-    this.sorter = new DictionarySorter(this.dictionary, this.order, descriptor);
+DictionaryOrder.prototype.configureSorting = function(descriptor) {
+    this.sorter.configure(descriptor);
 
     this.sort();
 };

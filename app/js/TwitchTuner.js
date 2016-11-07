@@ -102,7 +102,7 @@ var TwitchTuner = (function() {
 	};
 
 	exports.resetChannels = function() {
-		Channels.reset();
+		Channels.clear();
 
 		this.notify({
 			channels: null,
