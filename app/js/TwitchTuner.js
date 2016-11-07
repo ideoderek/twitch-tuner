@@ -75,7 +75,7 @@ var TwitchTuner = (function() {
 	};
 
 	exports.openChannel = function(channelName) {
-		Browser.open('https://twitch.tv/' + channelName + '/profile');
+		Browser.open('https://twitch.tv/' + channelName + '/videos/all');
 	};
 
 	exports.openOptions= function() {
