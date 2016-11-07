@@ -47,11 +47,11 @@
 		"default_title": "Twitch Tuner"
 	},
 
+	"options_page": "html/options.html",
+
 	"options_ui": {
 		"page": "html/options.html",
 		"chrome_style": false,
 		"open_in_tab": false
-	},
-
-	"options_page": "html/options.html"
+	}
 }
