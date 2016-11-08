@@ -3,7 +3,7 @@ Twitch Tuner
 
 A Chrome extension that notifies users when their favorite Twitch.tv streamers are live.
 
-Current version: `0.1.0` November 7, 2016
+Current version: `0.1.0` November 8, 2016
 
 Attribution
 -----------
