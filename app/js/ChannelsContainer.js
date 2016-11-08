@@ -129,7 +129,7 @@ ChannelContainer.prototype.setSortParameter = function(value, name) {
 	this[parameter[0].toLowerCase()].configureSorter(descriptor);
 };
 
-// I hate that this query method has a side-effect
+// WARN: this query method has a side-effect
 ChannelContainer.prototype.isFavorite = function(channelName, notifications) {
 	if (hasElement(this.favorites, channelName)) {
 		return true;
