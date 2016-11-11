@@ -5,6 +5,8 @@ A Chrome extension that notifies users when their favorite Twitch.tv streamers a
 
 Current version: `0.1.0` November 8, 2016
 
+Install via [Chrome Web Store](https://chrome.google.com/webstore/detail/twitch-tuner/cplekeleknfoaeiidekmmiffdafamdcm)
+
 Attribution
 -----------
 
