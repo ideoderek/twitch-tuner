@@ -1,11 +1,13 @@
+export {Browser as default}
+
 let emptyCallback = () => {}
 
-export let Browser = {
-	open: url => {
+let Browser = {
+	open: function(url) {
 		chrome.tabs.create({url: url})
 	},
 
-	openOptions: () => {
+	openOptions: function() {
 		if (chrome.runtime.openOptionsPage) {
 			chrome.runtime.openOptionsPage()
 		}
@@ -14,15 +16,15 @@ export let Browser = {
 		}
 	},
 
-	notification: (id, options) => {
+	notification: function(id, options) {
 		chrome.notifications.create(id, options, emptyCallback);
 	},
 
-	clearNotification: id => {
+	clearNotification: function(id) {
 		chrome.notifications.clear(id, emptyCallback)
 	},
 
-	badge: (text, color) => {
+	badge: function(text, color) {
 		if (color !== undefined) {
 			chrome.browserAction.setBadgeBackgroundColor({ color: color })
 		}
