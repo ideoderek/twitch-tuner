@@ -3,6 +3,10 @@ export default class Set {
 		this.data = []
 	}
 
+	get length() {
+		return this.data.length
+	}
+
 	data() {
 		return this.data
 	}
