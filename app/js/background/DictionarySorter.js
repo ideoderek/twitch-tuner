@@ -23,11 +23,15 @@ function compare() {
 
 export class DictionarySorter {
 	constructor(descriptor) {
+		this.configure(descriptor)
+
+		this.compare = compare.bind(this)
+	}
+
+	configure(descriptor) {
 		for (let key in descriptor) {
 			this[key] = descriptor[key]
 		}
-
-		this.compare = compare.bind(this)
 	}
 
 	define(dictionary, order) {

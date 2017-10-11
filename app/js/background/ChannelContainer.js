@@ -56,12 +56,11 @@ export default class ChannelContainer {
 	}
 
 	setSortParameter(value, name) {
-		let parameter = name.split('_')
-		let descriptor = {}
+		let type = name.split('_')[0]
+		let descriptor = this.getSortParameters(type)
+		let orderer = type.toLowerCase()
 
-		descriptor[parameter[1]] = value
-
-		this[parameter[0].toLowerCase()].configureSorter(descriptor)
+		this[orderer].configureSorting(descriptor)
 	}
 
 	update(newData, previousKeys, updater, remover) {
