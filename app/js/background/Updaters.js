@@ -1,161 +1,113 @@
-(function(global) {
-	var API_BASE_URL = 'https://api.twitch.tv/kraken';
+import Ajax from "Ajax.js"
 
-	var TwitchRequest = function(url) {
-		return Ajax(url)
-			.header('Accept', 'application/vnd.twitchtv.v3+json')
-			.header('Client-ID', 'hnzyrxuyox1bl31z4hid4c2igs750aq');
-	};
+const URL_PREFIX = 'https://api.twitch.tv/kraken';
+const STREAMS_URL_INFIX = '/streams?limit=100&channel='
 
-	global.FollowsUpdater = (function() {
-		function Updater(username, onSuccess, onFailure) {
-			this.baseUrl = API_BASE_URL + '/users/' + username + '/follows/channels?limit=100&offset=';
-			this.succeed = onSuccess;
-			this.fail = onFailure;
+const MAX_ATTEMPTS = 3
+const RETRY_DELAY = 5000
 
-			this.start();
+const HEADERS = {
+	'Accept': 'application/vnd.twitchtv.v3+json',
+	'Client-ID': 'hnzyrxuyox1bl31z4hid4c2igs750aq'
+}
 
-			return this;
+class Updater {
+	sendRequest() {
+		this.request = Ajax(this.getUrl())
+		this.request.success(this.parse.bind(this))
+		this.request.failure(this.fail.bind(this))
+
+		for (let key in HEADERS) {
+			this.request.header(key, HEADERS[key])
 		}
 
-		Updater.prototype.start = function() {
-			this.total = null;
-			this.offset = 0;
-			this.result = [];
+		this.request.get()
+	}
 
-			this.request();
-		};
+	fail() {
+		this.errorCallback(0)
+	}
 
-		Updater.prototype.getUrl = function() {
-			var url = this.baseUrl + this.offset;
+	abort() {
+		this.request.abort()
+	}
 
-			this.offset += 100;
+	start() {
+		this.result = []
+		this.offset = 0
 
-			return url;
-		};
+		this.sendRequest()
+	}
 
-		Updater.prototype.request = function() {
-			this.currentRequest = TwitchRequest(this.getUrl())
-				.success(this.parse.bind(this))
-				.failure(this.fail.bind(this));
-
-			this.currentRequest.get();
-		};
-
-		Updater.prototype.parse = function(status, response) {
-			if (status !== 200) {
-				return this.fail(status);
-			}
-
-			response = JSON.parse(response);
-
-			if (this.changed(response)) {
-				return this.start();
-			}
-
-			this.updateResult(response.follows);
-
-			if (this.finished()) {
-				return this.succeed(this.result);
-			}
-
-			this.request();
-		};
-
-		Updater.prototype.changed = function(current) {
-			// The only way to truly verify that follows have not changed
-			// between requests is to repeat the first request at the end.
-			// Not worth it.
-			if (this.total === null) {
-				this.total = current._total;
-			}
-			else if (this.total !== current._total) {
-				return true;
-			}
-
-			return false;
-		};
-
-		Updater.prototype.finished = function() {
-			if (this.offset >= this.total) {
-				return true;
-			}
-
-			return false;
-		};
-
-		Updater.prototype.updateResult = function(follows) {
-			this.result = this.result.concat(follows);
-		};
-
-		Updater.prototype.abort = function() {
-			this.currentRequest.abort();
-		};
-
-		return Updater;
-	})();
-
-	global.StreamsUpdater = (function() {
-		function Updater(channels, onSuccess, onFailure) {
-			this.channels = channels.slice();
-			this.succeed = onSuccess;
-			this.fail = onFailure;
-
-			this.start();
-
-			return this;
+	parse(statusCode, response) {
+		if (statusCode !== 200) {
+			this.errorCallback(statusCode)
 		}
 
-		Updater.prototype.baseUrl = API_BASE_URL + '/streams?limit=100&channel=';
+		response = JSON.parse(response)
 
-		Updater.prototype.getUrl = function() {
-			var channels = this.channels.splice(0, 100);
+		this.updateResult(response.follows)
 
-			return this.baseUrl + channels.join(',');
-		};
+		if (this.isFinished(response)) {
+			return this.finishCallback(this.result)
+		}
 
-		Updater.prototype.start = function() {
-			this.result = [];
+		this.offset += 100
 
-			this.request();
-		};
+		this.sendRequest()
+	}
+}
 
-		Updater.prototype.request = function() {
-			this.currentRequest = TwitchRequest(this.getUrl())
-				.success(this.parse.bind(this))
-				.failure(this.handleRequestError.bind(this));
+export class FollowsUpdater extends Updater {
+	constructor(username, finishCallback, errorCallback) {
+		this.baseUrl = `${API_BASE_URL}/users/${username}/follows/channels?limit=100&offset=`
 
-			this.currentRequest.get();
-		};
+		this.finishCallback = finishCallback
+		this.errorCallback = errorCallback
 
-		Updater.prototype.parse = function(status, response) {
-			if (status !== 200) {
-				return this.fail(status, this.result);
-			}
+		this.start()
 
-			response = JSON.parse(response);
+		return this
+	}
 
-			this.updateResult(response.streams);
+	url() {
+		return this.baseUrl + this.offset
+	}
 
-			if (this.channels.length === 0) {
-				return this.succeed(this.result);
-			}
+	isFinished(response) {
+		return this.offset >= response._total
+	}
 
-			this.request();
-		};
+	updateResult(response) {
+		this.result = this.result.concat(response.follows)
+	}
+}
 
-		Updater.prototype.updateResult = function(streams) {
-			this.result = this.result.concat(streams);
-		};
+export class StreamsUpdater extends Updater {
+	baseUrl = API_BASE_URL + STREAMS_URL_INFIX
 
-		Updater.prototype.handleRequestError = function() {
-			this.fail(this.result);
-		};
+	constructor(channels, finishCallback, errorCallback) {
+		this.channels = channels
 
-		Updater.prototype.abort = function() {
-			this.currentRequest.abort();
-		};
+		this.finishCallback = finishCallback
+		this.errorCallback = errorCallback
 
-		return Updater;
-	})();
-})(window);
+		this.start()
+
+		return this
+	}
+
+	url() {
+		let channels = this.channels.slice(this.offset, 100)
+
+		return this.baseUrl + channels.join(',')
+	}
+
+	isFinished() {
+		return this.offset >= this.channels.length
+	}
+
+	updateResult(response) {
+		this.result = this.result.concat(response.streams)
+	}
+}
