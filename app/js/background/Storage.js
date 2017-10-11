@@ -1,115 +1,102 @@
-var Storage = {
-	values: Browser.storage.all(),
-	listeners: {}
-};
+export let Storage = {
+	listeners: {},
 
-Storage.set = function(key, value) {
-	if (typeof key === 'string') {
-		this.values[key] = value;
+	clear: () => {
+		localStorage.clear()
+	},
 
-		Browser.storage.set(key, value);
+	remove: (keys) => {
+		if (typeof keys === 'string') {
+			localStorage.removeItem(key)
+		}
+		else {
+			for (let i in keys) {
+				this.remove(keys[i])
+			}
+		}
+	},
 
-		this.notify(key, value);
+	all: () => {
+		let values = {}
 
-		return;
-	}
+		for (let i = 0, m = localStorage.length; i < m; i++) {
+			let key = localStorage.key(i)
 
-	for (var i in key) {
-		this.set(i, key[i]);
-	}
-};
-
-Storage.fill = function(key, value) {
-	if (typeof key === 'string') {
-		if (! this.has(key)) {
-			this.set(key, value);
+			values[key] = this.get(key)
 		}
 
-		return;
+		return values
+	},
+
+	has: (key) => {
+		return this.get(key) !== null
+	},
+
+	get: (key) => {
+		try {
+			let encodedValue = localStorage.getItem(key)
+
+			return JSON.parse(encodedValue)
+		}
+		finally {
+			return null
+		}
+	},
+
+	collect: (keys) => {
+		let values = {}
+
+		for (let i in keys) {
+			let key = keys[i]
+
+			values[key] = _get(key)
+		}
+
+		return values
+	},
+
+	set: (key, value) => {
+		let encodedValue = JSON.stringify(value)
+
+		localStorage.setItem(key, encodedValue)
+
+		this.notify(key, value)
+	},
+
+	fill: (key, value) => {
+		if (typeof key === 'string') {
+			if (! this.has(key)) {
+				this.set(key, value)
+			}
+		}
+		else {
+			for (let i in key) {
+				this.fill(i, key[i])
+			}
+		}
+	},
+
+	listen: (key, listener) => {
+		if (! (key in this.listeners)) {
+			this.listeners[key] = []
+		}
+
+		this.listeners[key].push(listener)
+	},
+
+	listenToKeys: (keys, listener) => {
+		for (let i in keys) {
+			this.listen(keys[i], listener)
+		}
+	},
+
+	notify: (key, value) => {
+		if (! (key in this.listeners)) {
+			return
+		}
+
+		for (let i in this.listeners) {
+			this.listeners[i](value, key)
+		}
 	}
-
-	for (var i in key) {
-		this.fill(i, key[i]);
-	}
-};
-
-Storage.get = function(keys, listener) {
-	if (typeof keys === 'string') {
-		this.listen(keys, listener);
-
-		return keys in this.values ? this.values[keys] : null;
-	}
-
-	var keyValuePairs = {};
-
-	for (var i in keys) {
-		var key = keys[i];
-		keyValuePairs[key] = this.get(key, listener);
-	}
-
-	return keyValuePairs;
-};
-
-Storage.all = function() {
-	return this.values;
-};
-
-Storage.has = function(key) {
-	return key in this.values;
-};
-
-Storage.clear = function() {
-	this.values = {};
-
-	Browser.storage.clear();
-};
-
-Storage.remove = function(keys) {
-	if (typeof keys === 'string') {
-		delete this.values[keys];
-
-		Browser.storage.remove(keys);
-
-		return;
-	}
-
-	for (var i in keys) {
-		this.remove(keys[i]);
-	}
-};
-
-Storage.listen = function(key, listener) {
-	if (typeof listener !== 'function') {
-		return;
-	}
-
-	if (! (key in this.listeners)) {
-		this.listeners[key] = [listener];
-	}
-	else {
-		this.listeners[key].push([listener]);
-	}
-};
-
-Storage.notifiable = function(key) {
-	if (! (key in this.listeners) || ! (0 in this.listeners[key])) {
-		return false;
-	}
-
-	if (typeof this.listeners[key][0] === 'function') {
-		return true;
-	}
-
-	return false;
-};
-
-Storage.notify = function(key, value) {
-	if (! this.notifiable(key)) {
-		return;
-	}
-
-	var listeners = this.listeners[key];
-	for (var i in listeners) {
-		listeners[i](value, key);
-	}
-};
+}
