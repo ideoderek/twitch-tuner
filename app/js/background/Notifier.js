@@ -56,8 +56,6 @@ class Notification {
 }
 
 class SingleNotification extends Notification {
-	idPrefix = 'single_'
-
 	id() {
 		return this.idPrefix + this.data.name
 	}
@@ -111,10 +109,9 @@ class SingleNotification extends Notification {
 		return SINGLE_CLICK_URL_PREFIX + id
 	}
 }
+SingleNotification.idPrefix = 'single_'
 
 class MultiNotification extends Notification {
-	idPrefix = 'multi_'
-
 	id() {
 		return this.idPrefix + String(id++)
 	}
@@ -194,8 +191,9 @@ class MultiNotification extends Notification {
 		return MULTI_CLICK_URL
 	}
 }
+MultiNotification.idPrefix = 'multi_'
 
-export class Notifier {
+export default class Notifier {
 	constructor(Storage, Browser) {
 		this.store = Storage
 		this.browser = Browser
