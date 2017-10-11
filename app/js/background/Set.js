@@ -1,4 +1,4 @@
-export class Set {
+export default class Set {
 	constructor() {
 		this.data = []
 	}

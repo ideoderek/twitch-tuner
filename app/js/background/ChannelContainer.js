@@ -1,12 +1,12 @@
-import {DictionaryOrder as Orderer} from "DictionaryOrder.js"
-import Set from "Set.js"
+import {DictionaryOrder as Orderer} from "./DictionaryOrder.js"
+import Set from "./Set.js"
 
 const AUTO_FAVORITE_KEY = 'Favorites_AutoByNotifications'
 const FAVORITES_KEY = 'Favorites'
 const CHANNEL_SORT_KEYS = ['Channels_SortAttribute', 'Channels_SortDescending', 'Channels_GroupAttribute', 'Channels_GroupDescending']
 const STREAM_SORT_KEYS = ['Streams_SortAttribute', 'Streams_SortDescending', 'Streams_GroupAttribute', 'Streams_GroupDescending']
 
-export class ChannelContainer {
+export default class ChannelContainer {
 	constructor(store) {
 		this.store = store
 

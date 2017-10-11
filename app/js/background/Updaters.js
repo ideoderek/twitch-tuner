@@ -1,4 +1,4 @@
-import Ajax from "Ajax.js"
+import {Ajax} from "./Ajax.js"
 
 const URL_PREFIX = 'https://api.twitch.tv/kraken';
 const STREAMS_URL_INFIX = '/streams?limit=100&channel='

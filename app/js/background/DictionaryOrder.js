@@ -1,5 +1,5 @@
-import {DictionarySorter as Sorter} from "DictionarySorter.js"
-import Set from "Set.js"
+import {DictionarySorter as Sorter} from "./DictionarySorter.js"
+import Set from "./Set.js"
 
 export class DictionaryOrder {
 	constructor(dictionary, descriptor) {
