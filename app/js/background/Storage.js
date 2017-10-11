@@ -1,11 +1,13 @@
-export let Storage = {
-	listeners: {},
+export class Storage {
+	constructor() {
+		this.listeners = {}
+	}
 
-	clear: () => {
+	clear() {
 		localStorage.clear()
-	},
+	}
 
-	remove: (keys) => {
+	remove(keys) {
 		if (typeof keys === 'string') {
 			localStorage.removeItem(key)
 		}
@@ -14,9 +16,9 @@ export let Storage = {
 				this.remove(keys[i])
 			}
 		}
-	},
+	}
 
-	all: () => {
+	all() {
 		let values = {}
 
 		for (let i = 0, m = localStorage.length; i < m; i++) {
@@ -26,13 +28,13 @@ export let Storage = {
 		}
 
 		return values
-	},
+	}
 
-	has: (key) => {
+	has(key) {
 		return this.get(key) !== null
-	},
+	}
 
-	get: (key) => {
+	get(key) {
 		try {
 			let encodedValue = localStorage.getItem(key)
 
@@ -41,9 +43,9 @@ export let Storage = {
 		finally {
 			return null
 		}
-	},
+	}
 
-	collect: (keys) => {
+	collect(keys) {
 		let values = {}
 
 		for (let i in keys) {
@@ -53,17 +55,17 @@ export let Storage = {
 		}
 
 		return values
-	},
+	}
 
-	set: (key, value) => {
+	set(key, value) {
 		let encodedValue = JSON.stringify(value)
 
 		localStorage.setItem(key, encodedValue)
 
 		this.notify(key, value)
-	},
+	}
 
-	fill: (key, value) => {
+	fill(key, value) {
 		if (typeof key === 'string') {
 			if (! this.has(key)) {
 				this.set(key, value)
@@ -74,23 +76,23 @@ export let Storage = {
 				this.fill(i, key[i])
 			}
 		}
-	},
+	}
 
-	listen: (key, listener) => {
+	listen(key, listener) {
 		if (! (key in this.listeners)) {
 			this.listeners[key] = []
 		}
 
 		this.listeners[key].push(listener)
-	},
+	}
 
-	listenToKeys: (keys, listener) => {
+	listenToKeys(keys, listener) {
 		for (let i in keys) {
 			this.listen(keys[i], listener)
 		}
-	},
+	}
 
-	notify: (key, value) => {
+	notify(key, value) {
 		if (! (key in this.listeners)) {
 			return
 		}
