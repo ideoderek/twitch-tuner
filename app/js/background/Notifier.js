@@ -204,6 +204,7 @@ export class Notifier {
 		this.liveChannels = []
 
 		this.badgeEnabled = this.store.get(BADGE_ENABLED_KEY)
+		this.toggleBadge()
 		this.store.listen(BADGE_ENABLED_KEY, this.toggleBadge.bind(this))
 
 		chrome.notifications.onClicked.addListener(this.onNotificationClick)
