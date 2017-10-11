@@ -97,8 +97,10 @@ export default class Storage {
 			return
 		}
 
-		for (let i in this.listeners) {
-			this.listeners[i](value, key)
+		let listeners = this.listeners[key]
+
+		for (let i in listeners) {
+			listeners[i](value, key)
 		}
 	}
 }
