@@ -7,8 +7,8 @@ const SHOW_VIEWERS_KEY = 'Notifications_ShowViewers'
 const SHOW_DESCRIPTION_KEY = 'Notifications_ShowDescription'
 const FAVORITES_ONLY_KEY = 'Notifications_FavoritesOnly'
 
-MULTI_CLICK_URL = 'https://twitch.tv/directory/following/live'
-SINGLE_CLICK_URL_PREFIX = 'https://twitch.tv/'
+const MULTI_CLICK_URL = 'https://twitch.tv/directory/following/live'
+const SINGLE_CLICK_URL_PREFIX = 'https://twitch.tv/'
 
 var id = 0
 
