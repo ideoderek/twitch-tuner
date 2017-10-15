@@ -23,7 +23,7 @@ export default class ChannelContainer {
 		let favorites = this.store.get(FAVORITES_KEY) || []
 		this.favorites = new Set(favorites)
 
-		this.autoFavorite = this.store.get(AUTO_FAVORITE_KEY)
+		this.autoFavoriteEnabled = this.store.get(AUTO_FAVORITE_KEY)
 	}
 
 	attachListeners() {
@@ -36,7 +36,7 @@ export default class ChannelContainer {
 	}
 
 	setAutoFavoriting(on) {
-		this.autoFavorite = on
+		this.autoFavoriteEnabled = on
 	}
 
 	clear() {
@@ -65,7 +65,7 @@ export default class ChannelContainer {
 
 	update(newData, previousKeys, updater, remover) {
 		newData.forEach((obj) => {
-			updater(element)
+			updater(obj)
 
 			previousKeys.splice(previousKeys.indexOf(obj.channel.name), 1)
 		})
@@ -103,6 +103,7 @@ export default class ChannelContainer {
 
 		this.autoFavorite(name, data.notifications)
 
+		obj.name = name
 		obj.displayName = channel.display_name
 		obj.followers = channel.followers
 		obj.formattedFollowers = channel.followers.toLocaleString()
@@ -142,7 +143,7 @@ export default class ChannelContainer {
 	}
 
 	autoFavorite(name, notifications) {
-		if (this.autoFavorite && notifications) {
+		if (this.autoFavoriteEnabled && notifications) {
 			this.favorite(name, true)
 		}
 	}
@@ -162,7 +163,7 @@ export default class ChannelContainer {
 		this.streams.update(name)
 
 		this.favorites.toggle(name, favorite)
-		this.store.set(FAVORITES_KEY, this.favorites.data())
+		this.store.set(FAVORITES_KEY, this.favorites.all())
 	}
 
 	countChannels() {
