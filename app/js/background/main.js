@@ -24,7 +24,7 @@ let TwitchTuner = (function() {
 
 		updater: null,
 		timer: null
-	};
+	}
 
 	exports.getStorage = function() {
 		return store
@@ -36,207 +36,207 @@ let TwitchTuner = (function() {
 			updating: this.updating,
 			updatedAt: this.updatedAt,
 			validUsername: this.validUsername
-		};
-	};
+		}
+	}
 
 	exports.getChannelsContainer = function() {
-		return channels;
-	};
+		return channels
+	}
 
 	exports.warn = function() {
-		browser.badge(' ? ', '#FF0000');
-	};
+		browser.badge(' ? ', '#FF0000')
+	}
 
 	exports.validateUsername = function(username) {
 		if (typeof username === 'string' && username.length > 0) {
-			return true;
+			return true
 		}
 
-		this.warn();
+		this.warn()
 
-		return false;
-	};
+		return false
+	}
 
 	exports.setUsername = function(username) {
 		if (username === this.username) {
-			return;
+			return
 		}
 
 		if (this.validateUsername(username)) {
-			this.username = username;
+			this.username = username
 		}
 		else {
-			this.username = null;
+			this.username = null
 		}
 
-		store.set('Username', this.username);
+		store.set('Username', this.username)
 
-		this.validUsername = true;
-		this.updatedAt = null;
+		this.validUsername = true
+		this.updatedAt = null
 		this.notify({
 			username: this.username,
 			validUsername: true,
 			updatedAt: null
-		});
+		})
 
-		this.resetChannels();
+		this.resetChannels()
 
-		this.update();
-	};
+		this.update()
+	}
 
 	exports.openGame = function(gameName) {
-		browser.open('https://twitch.tv/directory/game/' + gameName);
-	};
+		browser.open('https://twitch.tv/directory/game/' + gameName)
+	}
 
 	exports.openStream = function(channelName) {
-		browser.open('https://twitch.tv/' + channelName);
-	};
+		browser.open('https://twitch.tv/' + channelName)
+	}
 
 	exports.openChannel = function(channelName) {
-		browser.open('https://twitch.tv/' + channelName + '/videos/all');
-	};
+		browser.open('https://twitch.tv/' + channelName + '/videos/all')
+	}
 
 	exports.openOptions= function() {
-		browser.openOptions();
-	};
+		browser.openOptions()
+	}
 
 	exports.notify = function(key, value) {
-		let message = typeof key === 'string' ? {key: value} : key;
+		let message = typeof key === 'string' ? {key: value} : key
 
-		chrome.runtime.sendMessage(message);
-	};
+		chrome.runtime.sendMessage(message)
+	}
 
 	exports.init = function() {
 		store.fill(DEFAULT_SETTINGS)
 
-		let username = store.get('Username');
+		let username = store.get('Username')
 
 		if (this.validateUsername(username)) {
-			this.username = username;
+			this.username = username
 		}
 
-		this.update();
-	};
+		this.update()
+	}
 
 	exports.resetChannels = function() {
-		channels.clear();
+		channels.clear()
 
 		this.notify({
 			channels: null,
 			streams: null
-		});
-	};
+		})
+	}
 
 	exports.cancelUpdate = function() {
 		if (this.updater === null) {
-			return;
+			return
 		}
 
-		this.updater.abort();
+		this.updater.abort()
 
-		this.updater = null;
-	};
+		this.updater = null
+	}
 
 	exports.update = function() {
-		clearTimeout(this.timer);
+		clearTimeout(this.timer)
 
 		if (! this.validateUsername(this.username)) {
-			return;
+			return
 		}
 
-		this.cancelUpdate();
+		this.cancelUpdate()
 
-		this.updating = true;
-		this.notify({updating: true});
+		this.updating = true
+		this.notify({updating: true})
 
-		this.updateFollows(this.username);
-	};
+		this.updateFollows(this.username)
+	}
 
 	exports.updateFollows = function(username) {
 		this.updater = new FollowsUpdater(
 			username,
 			this.completeFollowsUpdate.bind(this),
 			this.failFollowsUpdate.bind(this)
-		);
-	};
+		)
+	}
 
 	exports.completeFollowsUpdate = function(follows) {
-		this.updater = null;
+		this.updater = null
 
-		channels.updateChannels(follows);
+		channels.updateChannels(follows)
 
 		this.notify({
 			channels: null,
 			streams: null
-		});
+		})
 
-		this.updateStreams();
-	};
+		this.updateStreams()
+	}
 
 	exports.failFollowsUpdate = function(status) {
-		this.updater = null;
-		this.updating = false;
-		this.notify({updating: false});
+		this.updater = null
+		this.updating = false
+		this.notify({updating: false})
 
 		if (status === 404) {
-			this.validUsername = false;
-			this.notify({validUsername: false});
-			this.warn();
+			this.validUsername = false
+			this.notify({validUsername: false})
+			this.warn()
 		}
 		else {
-			this.queueUpdate();
+			this.queueUpdate()
 		}
-	};
+	}
 
 	exports.updateStreams = function() {
-		let channelNames = channels.getChannelNames();
+		let channelNames = channels.getChannelNames()
 
 		this.updater = new StreamsUpdater(
 			channelNames,
 			this.completeStreamsUpdate.bind(this),
 			this.failStreamsUpdate.bind(this)
-		);
-	};
+		)
+	}
 
 	exports.completeStreamsUpdate = function(streams) {
-		this.updater = null;
+		this.updater = null
 
-		channels.updateStreams(streams);
+		channels.updateStreams(streams)
 
-		notifier.update(channels);
+		notifier.update(channels)
 
 		this.notify({
 			streams: null
-		});
+		})
 
-		this.completeUpdate();
-	};
+		this.completeUpdate()
+	}
 
 	exports.failStreamsUpdate = function() {
-		this.updater = null;
-		this.updating = false;
-		this.notify({updating: false});
+		this.updater = null
+		this.updating = false
+		this.notify({updating: false})
 
-		this.queueUpdate();
-	};
+		this.queueUpdate()
+	}
 
 	exports.completeUpdate = function() {
-		this.updatedAt = (new Date()).valueOf();
-		this.updating = false;
+		this.updatedAt = (new Date()).valueOf()
+		this.updating = false
 
 		this.notify({
 			updating: this.updating,
 			updatedAt: this.updatedAt
-		});
+		})
 
-		this.queueUpdate();
-	};
+		this.queueUpdate()
+	}
 
 	exports.queueUpdate = function() {
-		this.timer = setTimeout(this.update.bind(this), UPDATE_INTERVAL);
-	};
+		this.timer = setTimeout(this.update.bind(this), UPDATE_INTERVAL)
+	}
 
-	exports.init();
+	exports.init()
 
-	return exports;
-})();
+	return exports
+})()
