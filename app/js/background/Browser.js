@@ -22,6 +22,10 @@ export default class Browser {
 		chrome.notifications.clear(id, emptyCallback)
 	}
 
+	onNotificationClick(callback) {
+		chrome.notifications.onClicked.addListener(callback)
+	}
+
 	badge(text, color) {
 		if (color !== undefined) {
 			chrome.browserAction.setBadgeBackgroundColor({ color: color })
