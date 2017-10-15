@@ -1,5 +1,19 @@
+import Storage from "./Storage.js"
+import ChannelContainer from "./ChannelContainer.js"
+import Notifier from "./Notifier.js"
+import Browser from "./Browser.js"
+import {FollowsUpdater, StreamsUpdater} from "./Updaters.js"
+import DEFAULT_SETTINGS from "./default-settings.js"
+
+const UPDATE_INTERVAL = 1000 * 60 * 5
+
+export {TwitchTuner as default}
+
 let TwitchTuner = (function() {
-	let Channels = new ChannelContainer();
+	let store = new Storage()
+	let browser = new Browser()
+	let channels = new ChannelContainer(store)
+	let notifier = new Notifier(store, browser)
 
 	let exports = {
 		username: null,
@@ -12,6 +26,10 @@ let TwitchTuner = (function() {
 		timer: null
 	};
 
+	exports.getStorage = function() {
+		return store
+	}
+
 	exports.getData = function() {
 		return {
 			username: this.username,
@@ -22,11 +40,11 @@ let TwitchTuner = (function() {
 	};
 
 	exports.getChannelsContainer = function() {
-		return Channels;
+		return channels;
 	};
 
 	exports.warn = function() {
-		Browser.badge(' ? ', '#FF0000');
+		browser.badge(' ? ', '#FF0000');
 	};
 
 	exports.validateUsername = function(username) {
@@ -51,7 +69,7 @@ let TwitchTuner = (function() {
 			this.username = null;
 		}
 
-		Storage.set('Username', this.username);
+		store.set('Username', this.username);
 
 		this.validUsername = true;
 		this.updatedAt = null;
@@ -67,19 +85,19 @@ let TwitchTuner = (function() {
 	};
 
 	exports.openGame = function(gameName) {
-		Browser.open('https://twitch.tv/directory/game/' + gameName);
+		browser.open('https://twitch.tv/directory/game/' + gameName);
 	};
 
 	exports.openStream = function(channelName) {
-		Browser.open('https://twitch.tv/' + channelName);
+		browser.open('https://twitch.tv/' + channelName);
 	};
 
 	exports.openChannel = function(channelName) {
-		Browser.open('https://twitch.tv/' + channelName + '/videos/all');
+		browser.open('https://twitch.tv/' + channelName + '/videos/all');
 	};
 
 	exports.openOptions= function() {
-		Browser.openOptions();
+		browser.openOptions();
 	};
 
 	exports.notify = function(key, value) {
@@ -89,20 +107,19 @@ let TwitchTuner = (function() {
 	};
 
 	exports.init = function() {
-		let username = Storage.get('Username');
+		store.fill(DEFAULT_SETTINGS)
+
+		let username = store.get('Username');
 
 		if (this.validateUsername(username)) {
 			this.username = username;
 		}
 
-		// Clear the badge so the previous stream count is not displayed
-		Browser.badge('');
-
 		this.update();
 	};
 
 	exports.resetChannels = function() {
-		Channels.clear();
+		channels.clear();
 
 		this.notify({
 			channels: null,
@@ -146,7 +163,7 @@ let TwitchTuner = (function() {
 	exports.completeFollowsUpdate = function(follows) {
 		this.updater = null;
 
-		Channels.updateChannels(follows);
+		channels.updateChannels(follows);
 
 		this.notify({
 			channels: null,
@@ -167,15 +184,15 @@ let TwitchTuner = (function() {
 			this.warn();
 		}
 		else {
-			this.timer = setTimeout(this.update.bind(this), 1000 * 10);
+			this.queueUpdate();
 		}
 	};
 
 	exports.updateStreams = function() {
-		let channels = Channels.getChannelNames();
+		let channelNames = channels.getChannelNames();
 
 		this.updater = new StreamsUpdater(
-			channels,
+			channelNames,
 			this.completeStreamsUpdate.bind(this),
 			this.failStreamsUpdate.bind(this)
 		);
@@ -184,9 +201,9 @@ let TwitchTuner = (function() {
 	exports.completeStreamsUpdate = function(streams) {
 		this.updater = null;
 
-		Channels.updateStreams(streams);
+		channels.updateStreams(streams);
 
-		Notifier(Channels);
+		notifier.update(channels);
 
 		this.notify({
 			streams: null
@@ -200,7 +217,7 @@ let TwitchTuner = (function() {
 		this.updating = false;
 		this.notify({updating: false});
 
-		this.timer = setTimeout(this.updateStreams.bind(this), 1000 * 3);
+		this.queueUpdate();
 	};
 
 	exports.completeUpdate = function() {
@@ -212,7 +229,11 @@ let TwitchTuner = (function() {
 			updatedAt: this.updatedAt
 		});
 
-		this.timer = setTimeout(this.update.bind(this), 1000 * 60 * 5);
+		this.queueUpdate();
+	};
+
+	exports.queueUpdate = function() {
+		this.timer = setTimeout(this.update.bind(this), UPDATE_INTERVAL);
 	};
 
 	exports.init();
