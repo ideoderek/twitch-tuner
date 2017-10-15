@@ -18,7 +18,7 @@ export class DictionaryOrder {
 	}
 
 	keys() {
-		return this.order.slice()
+		return this.order.all()
 	}
 
 	count() {
@@ -50,7 +50,7 @@ export class DictionaryOrder {
 	}
 
 	reduce(reducer, value) {
-		let keys = this.order
+		let keys = this.order.all()
 
 	    for (let i in keys) {
 	        value = reducer(this.dictionary[keys[i]], value)
@@ -60,7 +60,7 @@ export class DictionaryOrder {
 	}
 
 	filter(filter) {
-		let keys = this.order
+		let keys = this.order.all()
 		let result = []
 
 	    for (let i in keys) {
