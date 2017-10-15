@@ -1,21 +1,23 @@
+const TIMEOUT = 5000
+const RETRIES = 3
+const DELAY = 1000
+
 function errorHandler() {
-	if (this.retries === 0) {
+	if (this.retries === RETRIES) {
 		this.failure();
 	}
 	else {
-		this.retries -= 1;
+		this.retries += 1;
 
-		this.retry = setTimeout(this.resend.bind(this), this.delay);
+		this.retry = setTimeout(this.resend.bind(this), DELAY);
 	}
 }
 
 class AjaxRequest {
-	timeout = 5000
-	retries = 3
-	delay = 1000
-
 	constructor(url) {
 		this.url = url
+
+		this.retries = 0
 
 		this.headers = {}
 		this.request = new XMLHttpRequest()
@@ -61,7 +63,7 @@ class AjaxRequest {
 
 		this.attachHeaders()
 
-		this.request.timeout = this.timeout
+		this.request.timeout = TIMEOUT
 		this.request.ontimeout = this.request.onerror
 	}
 
