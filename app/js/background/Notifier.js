@@ -7,14 +7,23 @@ const SHOW_VIEWERS_KEY = 'Notifications_ShowViewers'
 const SHOW_DESCRIPTION_KEY = 'Notifications_ShowDescription'
 const FAVORITES_ONLY_KEY = 'Notifications_FavoritesOnly'
 
-const MULTI_CLICK_URL = 'https://twitch.tv/directory/following/live'
+const SINGLE_ID_PREFIX = 'single_'
+const MULTI_ID_PREFIX = 'multi_'
 const SINGLE_CLICK_URL_PREFIX = 'https://twitch.tv/'
+const MULTI_CLICK_URL = 'https://twitch.tv/directory/following/live'
 
 var id = 0
 
 class Notification {
-	constructor(data) {
-		this.data = data
+	constructor(browser, store, data) {
+		this.browser = browser
+		this.store = store
+
+		if (data !== undefined) {
+			this.data = data
+
+			this.spawn()
+		}
 	}
 
 	options() {
@@ -26,8 +35,8 @@ class Notification {
 		}
 	}
 
-	spawn(browser) {
-		browser.notification(this.id(), this.options())
+	spawn() {
+		this.browser.notification(this.id(), this.options())
 	}
 
 	config(key) {
@@ -46,8 +55,8 @@ class Notification {
 		return this.config(SHOW_DESCRIPTION_KEY)
 	}
 
-	static click(id) {
-		if (id.indexOf(this.idPrefix) === 0) {
+	click(id) {
+		if (id.indexOf(this.idPrefix()) === 0) {
 			this.browser.open(this.clickUrl(id))
 
 			this.browser.clearNotification(id)
@@ -56,8 +65,12 @@ class Notification {
 }
 
 class SingleNotification extends Notification {
+	idPrefix() {
+		return SINGLE_ID_PREFIX
+	}
+
 	id() {
-		return this.idPrefix + this.data.name
+		return this.idPrefix() + this.data.name
 	}
 
 	type() {
@@ -72,7 +85,7 @@ class SingleNotification extends Notification {
 		let options = super.options()
 		let message = this.message()
 
-		if (message === null) {
+		if (message === undefined) {
 			options.message = this.contextMessage()
 		}
 		else {
@@ -106,14 +119,19 @@ class SingleNotification extends Notification {
 	}
 
 	clickUrl(id) {
-		return SINGLE_CLICK_URL_PREFIX + id
+		let prefixLength = this.idPrefix().length
+		
+		return SINGLE_CLICK_URL_PREFIX + id.slice(prefixLength)
 	}
 }
-SingleNotification.idPrefix = 'single_'
 
 class MultiNotification extends Notification {
+	idPrefix() {
+		return MULTI_ID_PREFIX
+	}
+
 	id() {
-		return this.idPrefix + String(id++)
+		return this.idPrefix() + String(id++)
 	}
 
 	type() {
@@ -128,6 +146,7 @@ class MultiNotification extends Notification {
 		let options = super.options()
 
 		options.items = this.items()
+		options.message = ''
 		options.contextMessage = this.contextMessage()
 
 		return options
@@ -145,8 +164,6 @@ class MultiNotification extends Notification {
 	}
 
 	item(stream) {
-		item.title = stream.favorite ? '\u2661' : '>'
-
 		return {
 			title: this.itemTitle(stream),
 			message: this.itemMessage(stream)
@@ -191,7 +208,6 @@ class MultiNotification extends Notification {
 		return MULTI_CLICK_URL
 	}
 }
-MultiNotification.idPrefix = 'multi_'
 
 export default class Notifier {
 	constructor(Storage, Browser) {
@@ -202,17 +218,20 @@ export default class Notifier {
 		this.liveChannels = []
 
 		this.badgeEnabled = this.store.get(BADGE_ENABLED_KEY)
-		this.toggleBadge()
+		this.updateBadge()
 		this.store.listen(BADGE_ENABLED_KEY, this.toggleBadge.bind(this))
 
-		chrome.notifications.onClicked.addListener(this.onNotificationClick)
+		let clickListener = this.onNotificationClick.bind(this)
+		this.browser.onNotificationClick(clickListener)
 	}
 
 	update(channels) {
 		this.streamCount = channels.countStreams()
 		this.updateBadge()
 
-		let alertable = channels.filterStreams(this.isAlertable)
+		let favoritesOnly = this.store.get(FAVORITES_ONLY_KEY) === true
+		let isAlertable = this.isAlertable.bind(this, favoritesOnly)
+		let alertable = channels.filterStreams(isAlertable)
 		this.notify(alertable)
 
 		this.liveChannels = channels.getLiveChannelNames()
@@ -224,11 +243,11 @@ export default class Notifier {
 		}
 
 		if (streams.length > 3) {
-			new MultiNotification(streams, this.browser, this.store)
+			new MultiNotification(this.browser, this.store, streams)
 		}
 		else {
 			streams.forEach((stream) => {
-				new SingleNotification(stream, this.browser, this.store)
+				new SingleNotification(this.browser, this.store, stream)
 			})
 		}
 	}
@@ -251,17 +270,18 @@ export default class Notifier {
 	}
 
 	onNotificationClick(id) {
-		SingleNotification.click(id)
-		MultiNotification.click(id)
+		let single = new SingleNotification(this.browser)
+		let multi = new MultiNotification(this.browser)
+
+		single.click(id)
+		multi.click(id)
 	}
 
-	isAlertable(stream) {
-		let favoritesOnly = this.store.get(FAVORITES_ONLY_KEY) === true
-
+	isAlertable(favoritesOnly, stream) {
 		if (favoritesOnly && ! stream.favorite) {
 			return false
 		}
 
-		return liveChannels.indexOf(stream.name) === -1
+		return this.liveChannels.indexOf(stream.name) === -1
 	}
 }
