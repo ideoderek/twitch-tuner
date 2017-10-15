@@ -1,22 +1,18 @@
 export default class Set {
-	constructor() {
-		this.data = []
+	constructor(seed) {
+		this.data = seed === undefined ? [] : seed.slice()
 	}
 
 	get length() {
 		return this.data.length
 	}
 
-	data() {
-		return this.data
-	}
-
-	copy() {
+	all() {
 		return this.data.slice()
 	}
 
 	remove(value) {
-		let index = this.data.indexOf(value)
+		let index = this.index(value)
 
 		if (index > -1) {
 			this.data.splice(index, 1)
@@ -29,8 +25,16 @@ export default class Set {
 		}
 	}
 
+	insertBefore(insert, before) {
+		this.data.splice(before, 0, insert)
+	}
+
 	has(value) {
-		return this.data.indexOf(value) > -1
+		return this.index(value) > -1
+	}
+
+	index(value) {
+		return this.data.indexOf(value)
 	}
 
 	toggle(value, add) {
