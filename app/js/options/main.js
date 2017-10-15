@@ -1,4 +1,5 @@
-let storage = chrome.extension.getBackgroundPage().Storage
+let background = chrome.extension.getBackgroundPage().TwitchTuner
+let store = background.getStorage()
 let options = document.getElementsByClassName('option')
 
 function isCheckbox(element) {
@@ -18,13 +19,13 @@ function updateOption(e) {
 	let el = e.target
 	let value = isCheckbox(el) ? el.checked : el.value
 
-	storage.set(el.id, value)
+	store.set(el.id, value)
 }
 
 for (let i = 0, len = options.length; i < len; i++) {
 	let option = options[i]
 
-	displayOption(option, storage.get(option.id))
+	displayOption(option, store.get(option.id))
 }
 
 document.body.addEventListener('change', updateOption, false)
