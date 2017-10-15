@@ -35,13 +35,14 @@ export default class Storage {
 	}
 
 	get(key) {
+		let result = null
+
 		try {
 			let encodedValue = localStorage.getItem(key)
-
-			return JSON.parse(encodedValue)
+			result = JSON.parse(encodedValue)
 		}
 		finally {
-			return null
+			return result
 		}
 	}
 
