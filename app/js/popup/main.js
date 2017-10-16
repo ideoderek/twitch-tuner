@@ -1,6 +1,6 @@
 (function() {
 	var TwitchTuner = chrome.extension.getBackgroundPage().TwitchTuner,
-		Channels = TwitchTuner.getChannelsContainer(),
+		Channels = TwitchTuner.getChannelContainer(),
 		data;
 
 	/* Timer */
