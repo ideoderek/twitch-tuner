@@ -33,4 +33,8 @@ export default class Browser {
 
 		chrome.browserAction.setBadgeText({ text: String(text) })
 	}
+
+	sendMessage(payload) {
+		chrome.runtime.sendMessage(payload)
+	}
 }
