@@ -1,4 +1,6 @@
 const BADGE_COLOR = '#6441A5'
+const BADGE_WARN_TEXT = ' ? '
+const BADGE_WARN_COLOR = '#FF0000'
 const BADGE_ENABLED_KEY = 'Badge_Enabled'
 
 const NOTIFICATIONS_ENABLED_KEY = 'Notifications_Enabled'
@@ -120,7 +122,7 @@ class SingleNotification extends Notification {
 
 	clickUrl(id) {
 		let prefixLength = this.idPrefix().length
-		
+
 		return SINGLE_CLICK_URL_PREFIX + id.slice(prefixLength)
 	}
 }
@@ -267,6 +269,10 @@ export default class Notifier {
 		if (this.badgeEnabled) {
 			this.browser.badge(this.streamCount, BADGE_COLOR)
 		}
+	}
+
+	warn() {
+		this.browser.badge(BADGE_WARN_TEXT, BADGE_WARN_COLOR)
 	}
 
 	onNotificationClick(id) {
