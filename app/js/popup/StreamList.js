@@ -11,7 +11,7 @@ export default class StreamList extends List {
 	}
 
 	getList() {
-		return this.channels.reduceStreams(this.createListItem, '');
+		return this.channels.reduceStreams(this.createListItem, '')
 	}
 
 	createListItem(stream, acc) {
@@ -65,7 +65,7 @@ export default class StreamList extends List {
 			this.openStream(channel)
 		}
 
-		event.stopPropagation();
+		event.stopPropagation()
 	}
 
 	generatePreview(channel) {

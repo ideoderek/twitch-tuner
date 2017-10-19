@@ -4,12 +4,12 @@ const DELAY = 1000
 
 function errorHandler() {
 	if (this.retries === RETRIES) {
-		this.failure();
+		this.failure()
 	}
 	else {
-		this.retries += 1;
+		this.retries += 1
 
-		this.retry = setTimeout(this.resend.bind(this), DELAY);
+		this.retry = setTimeout(this.resend.bind(this), DELAY)
 	}
 }
 

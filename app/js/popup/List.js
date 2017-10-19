@@ -13,19 +13,19 @@ export default class List {
 	}
 
 	toggleFavorite(element, channel) {
-		var favorited = element.getAttribute('data-favorite') === 'true' ? true : false;
+		var favorited = element.getAttribute('data-favorite') === 'true' ? true : false
 
-		this.channels.favorite(channel, ! favorited);
+		this.channels.favorite(channel, ! favorited)
 
-		element.setAttribute('data-favorite', ! favorited);
+		element.setAttribute('data-favorite', ! favorited)
 	}
 
 	getChannelName(element) {
 		while (! element.classList.contains('item')) {
-			element = element.parentNode;
+			element = element.parentNode
 		}
 
-		return element.getAttribute('data-channel');
+		return element.getAttribute('data-channel')
 	}
 
 	openChannel(channel) {

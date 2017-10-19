@@ -61,7 +61,7 @@ class Tab {
 	}
 
 	hide() {
-		this.active = false;
+		this.active = false
 
 		this.tab.classList.remove('active')
 		this.pane.classList.remove('active')

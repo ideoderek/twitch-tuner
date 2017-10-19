@@ -54,5 +54,5 @@ chrome.runtime.onMessage.addListener((message) => {
 })
 
 document.getElementById('options_button').addEventListener('click', function() {
-	app.openOptions();
-}, false);
+	app.openOptions()
+}, false)

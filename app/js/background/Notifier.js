@@ -80,7 +80,7 @@ class SingleNotification extends Notification {
 	}
 
 	title() {
-		return this.data.displayName + ' is live!';
+		return this.data.displayName + ' is live!'
 	}
 
 	options() {

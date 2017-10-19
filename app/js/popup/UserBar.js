@@ -72,10 +72,10 @@ export default class UserBar {
 		this.username = data.username || ''
 
 		if (data.username === null) {
-			this.warn('Enter Twitch username');
+			this.warn('Enter Twitch username')
 		}
 		else if (data.validUsername === false) {
-			this.warn('Invalid Twitch username');
+			this.warn('Invalid Twitch username')
 		}
 		else {
 			this.container.classList.remove('warning')
