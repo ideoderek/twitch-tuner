@@ -23,9 +23,7 @@ export default class TwitchTuner {
 	}
 
 	initialize() {
-		console.log('TwitchTuner.initialize()')
 		let username = this.store.get(USERNAME_KEY)
-		console.log('Username:', username)
 
 		this.setUsername(username)
 	}
@@ -64,12 +62,10 @@ export default class TwitchTuner {
 	}
 
 	update() {
-		console.log('TwitchTuner.update()')
 		this.unscheduleUpdate()
 		this.cancelUpdate()
 
 		if (! this.validUsername) {
-			console.log('username invalid, cancelling update')
 			return
 		}
 
@@ -80,20 +76,16 @@ export default class TwitchTuner {
 	}
 
 	setUsername(username) {
-		console.log('TwitchTuner.setUsername(', username, ')')
 		if (username === this.username && this.username !== null) {
-			console.log('username === this.username')
 			return
 		}
 
 		if (this.validateUsername(username)) {
-			console.log('username valid')
 			this.username = username
 			this.validUsername = true
 			this.store.set(USERNAME_KEY, this.username)
 		}
 		else {
-			console.log('username invalid')
 			this.username = null
 			this.validUsername = false
 			this.updatedAt = null
@@ -126,7 +118,6 @@ export default class TwitchTuner {
 	}
 
 	updateFollows() {
-		console.log('TwitchTuner.updateFollows()')
 		this.updater = new this.FollowsUpdater(
 			this.username,
 			this.completeFollowsUpdate.bind(this),
@@ -232,10 +223,6 @@ export default class TwitchTuner {
 	}
 
 	unscheduleUpdate() {
-		if (this.timer === null) {
-			return
-		}
-
 		clearTimeout(this.timer)
 
 		this.timer = null
