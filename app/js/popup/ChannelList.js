@@ -1,6 +1,6 @@
 import List from "./List.js"
 
-const NO_USERNAME_MESSAGE = '<p class="notice">Enter you Twitch.tv username to see your followed channels</p>'
+const NO_USERNAME_MESSAGE = '<p class="notice">Enter your username to see your followed channels</p>'
 const NO_FOLLOWS_MESSAGE = '<p class="notice">You are not following any channels</p>'
 const CONTAINER_ID = 'channels_pane'
 
