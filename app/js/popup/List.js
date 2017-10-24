@@ -5,7 +5,7 @@ export default class List {
 		this.getData = getData
 
 		this.container = document.getElementById(id)
-		this.container.addEventListener('click', this.click.bind(this), false)
+		this.container.addEventListener('mousedown', this.click.bind(this))
 	}
 
 	display(content) {
