@@ -50,7 +50,7 @@ export default class UserBar {
 	warn(label) {
 		this.container.classList.add('warning')
 
-		display(label)
+		this.display(label)
 	}
 
 	display(label) {
