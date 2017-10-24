@@ -68,6 +68,27 @@ export default class UserBar {
 		this.field.select()
 	}
 
+	keyup(event) {
+		if (event.keyCode === 13) {
+			this.confirm()
+		}
+	}
+
+	click(event) {
+		let element = event.target
+		let id = element.id
+
+		if (id === CANCEL_ID) {
+			this.normalMode()
+		}
+		else if (id === CONFIRM_ID) {
+			this.confirm()
+		}
+		else if (! event.currentTarget.classList.contains('editing')) {
+			this.editMode()
+		}
+	}
+
 	update(data) {
 		this.username = data.username || ''
 
