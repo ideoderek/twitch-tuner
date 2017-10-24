@@ -45,16 +45,22 @@ export default class TwitchTuner {
 		}
 	}
 
-	openGame(gameName) {
-		this.browser.open('https://twitch.tv/directory/game/' + gameName)
+	openGame(gameName, active) {
+		let url = 'https://twitch.tv/directory/game/' + gameName
+
+		this.browser.open(url, active)
 	}
 
-	openStream(channelName) {
-		this.browser.open('https://twitch.tv/' + channelName)
+	openStream(channelName, active) {
+		let url = 'https://twitch.tv/' + channelName
+
+		this.browser.open(url, active)
 	}
 
-	openChannel(channelName) {
-		this.browser.open('https://twitch.tv/' + channelName + '/videos/all')
+	openChannel(channelName, active) {
+		let url = 'https://twitch.tv/' + channelName + '/videos/all'
+
+		this.browser.open(url, active)
 	}
 
 	openOptions() {
