@@ -28,15 +28,15 @@ export default class List {
 		return element.getAttribute('data-channel')
 	}
 
-	openChannel(channel) {
-		this.app.openChannel(channel)
+	openChannel(channel, active) {
+		this.app.openChannel(channel, active)
 	}
 
-	openStream(channel) {
-		this.app.openStream(channel)
+	openStream(channel, active) {
+		this.app.openStream(channel, active)
 	}
 
-	openGame(game) {
-		this.app.openGame(game)
+	openGame(game, active) {
+		this.app.openGame(game, active)
 	}
 }
