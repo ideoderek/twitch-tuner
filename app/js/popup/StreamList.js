@@ -1,9 +1,9 @@
 import List from "./List.js"
 
 const CONTAINER_ID = 'streams_pane'
-const NO_USERNAME_MESSAGE = '<p class="notice">Enter you Twitch.tv username to see when your followed channels are live</p>'
+const NO_USERNAME_MESSAGE = '<p class="notice">Enter your username to see when your followed channels are live</p>'
 const NO_FOLLOWS_MESSAGE = '<p class="notice">You are not following any channels</p>'
-const NO_STREAMS_MESSAGE = '<p class="notice">None of your followed channels are currently live</p>'
+const NO_STREAMS_MESSAGE = '<p class="notice">None of your followed channels are live</p>'
 
 export default class StreamList extends List {
 	constructor(channels, app, getData) {
