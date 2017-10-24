@@ -20,25 +20,15 @@ export default class UserBar {
 	}
 
 	attachListeners() {
-		let confirm = this.confirm.bind(this)
+		this.container.addEventListener('click', this.click.bind(this))
 
-		this.attachListener(DISPLAY_ID, 'click', this.editMode.bind(this))
-		this.attachListener(CANCEL_ID, 'click', this.normalMode.bind(this))
-		this.attachListener(CONFIRM_ID, 'click', confirm)
-
-		this.field.addEventListener('keyup', (event) => {
-			if (event.keyCode === 13) confirm()
-		}, false)
-	}
-
-	attachListener(id, eventType, callback) {
-		document.getElementById(id).addEventListener(eventType, callback, false)
+		this.field.addEventListener('keyup', this.keyup.bind(this))
 	}
 
 	confirm() {
-		set()
+		this.set()
 
-		toggleMode(false)
+		this.normalMode()
 	}
 
 	set() {
