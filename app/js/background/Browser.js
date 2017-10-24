@@ -1,8 +1,8 @@
 let emptyCallback = () => {}
 
 export default class Browser {
-	open(url) {
-		chrome.tabs.create({url: url})
+	open(url, active = true) {
+		chrome.tabs.create({url, active})
 	}
 
 	openOptions() {
