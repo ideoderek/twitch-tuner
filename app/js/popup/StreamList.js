@@ -55,41 +55,43 @@ export default class StreamList extends List {
 	click(event) {
 		let element = event.target
 		let channel = this.getChannelName(element)
+		let button = event.button
 
-		if (element.classList.contains('game')) {
-			this.openGame(element.getAttribute('data-game'))
-		}
-		else if (element.classList.contains('favorite')) {
-			this.toggleFavorite(element, channel)
-		}
-		else if (element.classList.contains('preview-button')) {
-			this.togglePreview(element, channel)
-		}
-		else {
-			this.openStream(channel)
+		if (button !== 0 && button !== 1) {
+			return
 		}
 
-		event.stopPropagation()
+		event.preventDefault()
+
+		let active = button === 0
+
+		while (! element.classList.contains('stream')) {
+			if (element.classList.contains('game_name')) {
+				this.openGame(element.title, active)
+
+				return
+			}
+
+			if (element.classList.contains('favorite')) {
+				this.toggleFavorite(element, channel)
+
+				return
+			}
+
+			if (element.classList.contains('preview')) {
+				this.resizePreview(element)
+
+				return
+			}
+
+			element = element.parentElement
+		}
+
+		this.openStream(channel, active)
 	}
 
-	generatePreview(channel) {
-		let stream = this.channels.get(channel)
-
-		return `
-			<div class="preview" data-description="${stream.description}">
-				<img src="${stream.preview}">
-			</div>
-		`
-	}
-
-	togglePreview(element, channel) {
-		let container = element.parentElement
-
-		if (! container.lastElementChild.classList.contains('preview')) {
-			container.innerHTML += this.generatePreview(channel)
-		}
-
-		container.classList.toggle('show-preview')
+	resizePreview(element) {
+		element.classList.toggle('enlarged')
 	}
 
 	update() {
