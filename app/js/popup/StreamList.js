@@ -17,32 +17,36 @@ export default class StreamList extends List {
 	createListItem(stream, acc) {
 		let html = `
 			<li class="item stream" data-channel="${stream.name}">
-				<h2>
-					${stream.displayName}
-					<span class="favorite" data-favorite="${stream.favorite}"></span>
+				<h2 class="lead">
+					<span class="displayName">${stream.displayName}</span>
+					<span class="favorite" data-favorite="${stream.favorite}">
+						<span class="favorite_icon"></span>
+					</span>
 				</h2>
-		`
+				<div class="preview">
+					<img src="${stream.preview}">
+				</div>
+				<div class="metadata">`
 
-		if (stream.game !== null) {
-			html += `
-				<p>
-					<img class="icon" src="/img/game.png">
-					<span class="game" data-game="${stream.game}">
-						${stream.game}
-					</span>
-				</p>
-			`
-		}
+				if (stream.game !== null) {
+					html += `
+					<p class="game">
+						<span class="game_icon icon"></span>
+						<span class="game_name" title="${stream.game}">${stream.game}</span>
+					</p>
+					`
+				}
 
-		html += `
-			<p class="audience">
-				<img class="icon" src="/img/audience.png">
-					<span class="viewers">
-						${stream.formattedViewers} viewer${stream.viewers === 1 ? '' : 's'}
-					</span>
-			</p>
-			<div class="preview-button"></div>
-		</li>
+				html += `
+					<p class="audience">
+						<span class="audience_icon icon"></span>
+						<span class="audience_count">
+							${stream.formattedViewers} viewer${stream.viewers === 1 ? '' : 's'}
+						</span>
+					</p>
+				</div>
+				<div class="description">${stream.description}</div>
+			</li>
 		`
 
 		return acc + html

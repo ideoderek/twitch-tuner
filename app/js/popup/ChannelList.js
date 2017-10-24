@@ -20,16 +20,20 @@ export default class ChannelList extends List {
 	createListItem(channel, acc) {
 		let html = `
 			<li class="item channel" data-channel="${channel.name}">
-				<h2>
-					${channel.displayName}
-					<span class="favorite" data-favorite="${channel.favorite}"></span>
-				</h2>
-				<p class="audience">
-					<img class="icon" src="/img/audience.png">
-					<span class="followers">
-						${channel.formattedFollowers} follower${channel.followers === 1 ? '' : 's'}
+				<h2 class="lead">
+					<span class="displayName">${channel.displayName}</span>
+					<span class="favorite" data-favorite="${channel.favorite}">
+						<span class="favorite_icon"></span>
 					</span>
-				</p>
+				</h2>
+				<div class="metadata">
+					<p class="audience">
+						<span class="audience_icon icon"></span>
+						<span class="audience_count">
+							${channel.formattedFollowers} follower${channel.followers === 1 ? '' : 's'}
+						</span>
+					</p>
+				</div>
 			</li>
 		`
 
