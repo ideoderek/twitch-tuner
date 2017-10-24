@@ -43,13 +43,27 @@ export default class ChannelList extends List {
 	click(event) {
 		let element = event.target
 		let channel = this.getChannelName(element)
+		let button = event.button
 
-		if (element.classList.contains('favorite')) {
-			this.toggleFavorite(element, channel)
+		if (button !== 0 && button !== 1) {
+			return
 		}
-		else {
-			this.openChannel(channel)
+
+		event.preventDefault()
+
+		let active = button === 0
+
+		while (! element.classList.contains('channel')) {
+			if (element.classList.contains('favorite')) {
+				this.toggleFavorite(element, channel)
+
+				return
+			}
+
+			element = element.parentElement
 		}
+
+		this.openChannel(channel, active)
 	}
 
 	update() {
