@@ -264,6 +264,20 @@ nav
 	display inline-block
 	width 40%
 	float left
+	position relative
+
+	&:hover::after
+		content 'enlarge'
+		text-transform uppercase
+		text-align center
+		color #FFFFFF
+		position absolute
+		background rgba(50, 50, 50, 0.5)
+		width 100%
+		line-height 72px
+		top 0
+		bottom 0
+		letter-spacing 1px
 
 	img
 		width 100%
@@ -273,6 +287,10 @@ nav
 		display block
 		width 320px
 		float none
+
+		&:hover::after
+			content 'shrink'
+			line-height 180px
 
 .metadata
 	font-size 0.83em
