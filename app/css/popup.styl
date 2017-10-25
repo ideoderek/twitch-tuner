@@ -111,11 +111,11 @@ p
 	background-color #6441A5
 	border-radius 100px
 	position fixed
-	bottom 20px
-	right 10px
-	padding 10px
-	width 24px
-	height 24px
+	bottom 15px
+	right 15px
+	padding 6px
+	width 48px
+	height 48px
 	z-index 1
 	box-shadow 0 0 3px #6A6A6A
 
@@ -214,9 +214,11 @@ nav
 		padding 10px 14px
 
 	.icon
-		width 24px
-		height 24px
 		margin-right 8px
+		height 24px
+		width 24px
+		// I don't know why this is necessary
+		min-width 24px
 
 	.audience
 	.game
@@ -234,7 +236,6 @@ nav
 		white-space nowrap
 
 		&:hover
-			//text-decoration underline
 			border-bottom 1px solid #6441A5
 
 	.favorite
@@ -304,11 +305,21 @@ nav
 	display inline-block
 	color #222222
 	padding 10px 14px
+
+#modeToggle_checkbox
+	margin 0 10px 0 0
+
+#modeToggle
+#modeToggle_checkbox
+#modeToggle_label
 	cursor pointer
 
 .--darkMode
 	body&
 		background #343434
+
+	#options_button
+		box-shadow 0 0 3px #111111
 
 	#info_bar
 		background #343434
