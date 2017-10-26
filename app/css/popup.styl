@@ -8,46 +8,51 @@ body
 	padding-bottom 20px
 	width 340px
 	font-size 18px
-	font-family $body_font
-	background #DFDFDF
+	font-family $main_font
+	background #DDDDDD
 
-p
-	margin 0
+// Header
 
 #header
-	background #6441A5
+	background $primary_color
 	padding-top 10px
 
 .bar
 	padding 5px 12px 10px
-	margin 0 10px 0
+	margin 0 10px 10px
 	border-radius 2px
+	position relative
 
-	& + .bar
-		margin-top 10px
+	.content
+		display inline-block
 
-.content
-	display inline-block
-	vertical-align middle
+	.controls
+		display inline-block
+		position absolute
+		right 5px
 
-.controls
-	display inline-block
-	vertical-align middle
-	position absolute
-	right 12px
+	.button
+		cursor pointer
+		width 24px
+		height 24px
 
-.button
-	cursor pointer
-	width 24px
-	display block
-	height 24px
+// Username bar
+
+$user_background = #55DD33
+$user_shadow = #22AA00
 
 #user_bar
-	background #5FDC35
+	background $user_background
 	color #FFFFFF
 	font-size 0.9em
-	box-shadow 0 0 3px #442185, inset 0 0 3px #3FBC15
+	box-shadow 0 0 3px $primary_shadow, inset 0 0 3px $user_shadow
 	cursor pointer
+
+	&.editing
+		cursor default
+
+	.button-row
+		text-align right
 
 	button
 		background transparent
@@ -56,10 +61,11 @@ p
 		padding 3px 7px
 		color #FFFFFF
 		font-size 0.9em
-		font-family $control_font
 		cursor pointer
 		text-transform uppercase
+		letter-spacing 1px
 		outline 0
+		font-family $main_font
 
 	button:hover
 		background darken(@background, 10%)
@@ -69,17 +75,13 @@ p
 
 #user_bar.warning
 	background #FF2222
-	color #FFFFFF
-	box-shadow 0 0 3px #442185, inset 0 0 3px #BB0000
+	box-shadow 0 0 3px $primary_shadow, inset 0 0 3px #BB0000
 
 	button:hover
 		background darken(@background, 10%)
 
 	button:focus
 		background darken(@background, 20%)
-
-#user_bar.editing
-		cursor default
 
 #username_editor
 	display none
@@ -90,7 +92,7 @@ p
 #username_field
 	display block
 	border none
-	box-shadow 0 0 3px #3FBC15, inset 0 0 3px #D0D0D0
+	box-shadow 0 0 3px $user_shadow, inset 0 0 3px #CCCCCC
 	border-radius 2px
 	background #FFFFFF
 	font-size 1em
@@ -101,29 +103,20 @@ p
 	width 100%
 	outline 0
 
-.button-row
-	text-align right
-
-.button-row button + button
-	margin-left 0
-
-#options_button
-	background-color #6441A5
-	border-radius 100px
-	position fixed
-	bottom 15px
-	right 15px
-	padding 6px
-	width 48px
-	height 48px
-	z-index 1
-	box-shadow 0 0 3px #6A6A6A
-
-	img
-		vertical-align middle
-
 #edit_button
 	background url('/img/edit.png')
+
+// Update time tracker bar
+
+#info_bar
+	font-size 0.8em
+	background #FFFFFF
+	box-shadow 0 0 3px $primary_shadow, inset 0 0 3px #DDDDDD
+	cursor default
+	color #000000
+
+#time_label
+	color #555555
 
 #reload_button
 	background url('/img/reload.png')
@@ -138,31 +131,19 @@ p
 	100%
 		transform rotateZ(360deg)
 
-#info_bar
-	font-size 0.8em
-	background #FFFFFF
-	box-shadow 0 0 3px #442185, inset 0 0 3px #DFDFDF
-
-	.content
-		cursor default
-
-#time_label
-	color #5F5F5F
-
-#time_display
-	margin-left 10px
+// Tab bar
 
 nav
 	font-size 0.9em
-	margin 30px 10px 0
+	margin 20px 10px 0
 
 	ul
 		margin 0
-		list-style-type none
 		padding 0
+		list-style-type none
 
 	li
-		color #C0C0C0
+		color #BBBBBB
 		display inline-block
 		padding 0 0 12px
 		letter-spacing 1px
@@ -177,6 +158,8 @@ nav
 		&.active
 			border-bottom 3px solid #FFFFFF
 
+// Streams & channels
+
 #lists
 	ul
 		list-style-type none
@@ -188,12 +171,13 @@ nav
 			display block
 
 .notice
-	margin 0 10px
-	padding 10px 20px
-	background #7E5BBE
+	margin 20px 10px 0
+	padding 10px 14px
+	background $primary_color
 	color #FFFFFF
 	border-radius 2px
-	box-shadow 0 0 3px #6A6A6A
+	box-shadow 0 0 3px #666666
+	cursor default
 
 .item
 	background #FFFFFF
@@ -201,7 +185,7 @@ nav
 	position relative
 	margin 20px 10px 0
 	border-radius 0 0 2px 2px
-	box-shadow 0 1px 3px 0 #707070
+	box-shadow 0 1px 3px #666666
 	padding-bottom 10px
 
 	.lead
@@ -209,7 +193,7 @@ nav
 		letter-spacing 2px
 		margin 0
 		font-weight normal
-		font-family Calibri
+		font-family $heading_font
 		background #F0F0F0
 		padding 10px 14px
 
@@ -220,51 +204,61 @@ nav
 		// I don't know why this is necessary
 		min-width 24px
 
-	.audience
 	.game
+	.audience
 		margin-top 10px
 		display flex
 		flex-direction row
 		align-items center
 
-	.audience_count
-		color #555555
-
 	.game_name
-		color #6441A5
+		color $primary_color
 		overflow hidden
 		white-space nowrap
 
 		&:hover
-			border-bottom 1px solid #6441A5
+			border-bottom 1px solid $primary_color
 
-	.favorite
-		float right
+	.game_icon
+		background url('/img/game.png')
 
-		.favorite_icon
-			width 24px
-			height 24px
-			display block
-			vertical-align middle
-			background url('/img/favorite-unfavorited.png')
+	.audience_count
+		color #555555
 
-	.favorite[data-favorite='true'] .favorite_icon
+	.audience_icon
+		background url('/img/audience.png')
+
+	.description
+		clear both
+		padding 10px 14px 0
+		color #555555
+		font-style italic
+		font-size 0.8em
+
+.favorite
+	float right
+
+	.favorite_icon
+		width 24px
+		height 24px
+		display block
+		background url('/img/favorite-unfavorited.png')
+
+	&[data-favorite='true'] .favorite_icon
 		background url('/img/favorite-favorited.png')
 
-	.favorite[data-favorite='true']:hover .favorite_icon
+	&[data-favorite='true']:hover .favorite_icon
 		background url('/img/favorite-unfavorite.png')
-
-.game_icon
-	background url('/img/game.png')
-
-.audience_icon
-	background url('/img/audience.png')
 
 .preview
 	display inline-block
 	width 40%
 	float left
 	position relative
+
+	img
+		width 100%
+		vertical-align middle
 
 	&:hover::after
 		content 'enlarge'
@@ -278,10 +272,6 @@ nav
 		top 0
 		bottom 0
 		letter-spacing 1px
-
-	img
-		width 100%
-		vertical-align middle
 
 	&.enlarged
 		display block
@@ -300,25 +290,17 @@ nav
 		padding 0 10px 0 8px
 		width 60%
 
+	.channel &
+		padding 0 14px
+
 	.preview.enlarged + &
 		display block
 		width 100%
 
-.channel
-	.metadata
-		padding 0 14px
-
-.description
-	clear both
-	padding 10px 14px 0
-	color #6A6A6A
-	font-style italic
-	font-size 0.8em
-
 #modeToggle
 	margin 20px 10px 0
 	border-radius 2px
-	box-shadow 0 0 3px #707070
+	box-shadow 0 0 3px #666666
 	background #FFFFFF
 	display inline-block
 	color #222222
@@ -332,32 +314,47 @@ nav
 #modeToggle_label
 	cursor pointer
 
+#options_button
+	position fixed
+	bottom 15px
+	right 15px
+	height 48px
+	width 48px
+	padding 6px
+	border-radius 100px
+	background $primary_color
+	box-shadow 0 0 3px #666666
+	z-index 1
+
+	img
+		vertical-align middle
+
 .--darkMode
 	body&
-		background #343434
-
-	#options_button
-		box-shadow 0 0 3px #111111
+		background #333333
 
 	#info_bar
-		background #343434
-		box-shadow 0 0 3px #442185, inset 0 0 3px #111111
+		background #333333
+		box-shadow 0 0 3px $primary_shadow, inset 0 0 3px #111111
 		color #FFFFFF
 
 	#time_label
-		color #AFAFAF
+		color #AAAAAA
+
+	#reload_button
+		background url('/img/darkMode_reload.png')
 
 	.notice
 		box-shadow 0 0 3px #111111
 
 	.item
 	#modeToggle
-		background #787878
+		background #777777
 		box-shadow 0 1px 3px #111111
 		color #FFFFFF
 
 	.lead
-		background #565656
+		background #555555
 
 	.game_name
 		color #FFFFFF
@@ -369,13 +366,13 @@ nav
 		background url('/img/darkMode_game.png')
 
 	.audience_count
-		color #DFDFDF
+		color #DDDDDD
 
 	.audience_icon
 		background url('/img/darkMode_audience.png')
 
 	.description
-		color #D9D9D9
+		color #DDDDDD
 
-	#reload_button
-		background url('/img/darkMode_reload.png')
+	#options_button
+		box-shadow 0 0 3px #111111
