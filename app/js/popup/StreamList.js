@@ -1,9 +1,9 @@
 import List from "./List.js"
 
 const CONTAINER_ID = 'streams_pane'
-const NO_USERNAME_MESSAGE = '<p class="notice">Enter your username to see when your followed channels are live</p>'
-const NO_FOLLOWS_MESSAGE = '<p class="notice">You are not following any channels</p>'
-const NO_STREAMS_MESSAGE = '<p class="notice">None of your followed channels are live</p>'
+const NO_USERNAME_MESSAGE = '<div class="notice">Enter your username to see when your followed channels are live</div>'
+const NO_FOLLOWS_MESSAGE = '<div class="notice">You are not following any channels</div>'
+const NO_STREAMS_MESSAGE = '<div class="notice">None of your followed channels are live</div>'
 
 export default class StreamList extends List {
 	constructor(channels, app, getData) {
@@ -30,20 +30,20 @@ export default class StreamList extends List {
 
 				if (stream.game !== null) {
 					html += `
-					<p class="game">
+					<div class="game">
 						<span class="game_icon icon"></span>
 						<span class="game_name" title="${stream.game}">${stream.game}</span>
-					</p>
+					</div>
 					`
 				}
 
 				html += `
-					<p class="audience">
+					<div class="audience">
 						<span class="audience_icon icon"></span>
 						<span class="audience_count">
 							${stream.formattedViewers} viewer${stream.viewers === 1 ? '' : 's'}
 						</span>
-					</p>
+					</div>
 				</div>
 				<div class="description">${stream.description}</div>
 			</li>

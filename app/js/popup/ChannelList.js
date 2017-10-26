@@ -1,7 +1,7 @@
 import List from "./List.js"
 
-const NO_USERNAME_MESSAGE = '<p class="notice">Enter your username to see your followed channels</p>'
-const NO_FOLLOWS_MESSAGE = '<p class="notice">You are not following any channels</p>'
+const NO_USERNAME_MESSAGE = '<div class="notice">Enter your username to see your followed channels</div>'
+const NO_FOLLOWS_MESSAGE = '<div class="notice">You are not following any channels</div>'
 const CONTAINER_ID = 'channels_pane'
 
 export default class ChannelList extends List {
@@ -27,12 +27,12 @@ export default class ChannelList extends List {
 					</span>
 				</h2>
 				<div class="metadata">
-					<p class="audience">
+					<div class="audience">
 						<span class="audience_icon icon"></span>
 						<span class="audience_count">
 							${channel.formattedFollowers} follower${channel.followers === 1 ? '' : 's'}
 						</span>
-					</p>
+					</div>
 				</div>
 			</li>
 		`
