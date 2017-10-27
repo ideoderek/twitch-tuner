@@ -20,25 +20,15 @@ export default class UserBar {
 	}
 
 	attachListeners() {
-		let confirm = this.confirm.bind(this)
+		this.container.addEventListener('click', this.click.bind(this))
 
-		this.attachListener(DISPLAY_ID, 'click', this.editMode.bind(this))
-		this.attachListener(CANCEL_ID, 'click', this.normalMode.bind(this))
-		this.attachListener(CONFIRM_ID, 'click', confirm)
-
-		this.field.addEventListener('keyup', (event) => {
-			if (event.keyCode === 13) confirm()
-		}, false)
-	}
-
-	attachListener(id, eventType, callback) {
-		document.getElementById(id).addEventListener(eventType, callback, false)
+		this.field.addEventListener('keyup', this.keyup.bind(this))
 	}
 
 	confirm() {
-		set()
+		this.set()
 
-		toggleMode(false)
+		this.normalMode()
 	}
 
 	set() {
@@ -50,7 +40,7 @@ export default class UserBar {
 	warn(label) {
 		this.container.classList.add('warning')
 
-		display(label)
+		this.display(label)
 	}
 
 	display(label) {
@@ -66,6 +56,27 @@ export default class UserBar {
 
 		this.field.value = this.username
 		this.field.select()
+	}
+
+	keyup(event) {
+		if (event.keyCode === 13) {
+			this.confirm()
+		}
+	}
+
+	click(event) {
+		let element = event.target
+		let id = element.id
+
+		if (id === CANCEL_ID) {
+			this.normalMode()
+		}
+		else if (id === CONFIRM_ID) {
+			this.confirm()
+		}
+		else if (! event.currentTarget.classList.contains('editing')) {
+			this.editMode()
+		}
 	}
 
 	update(data) {

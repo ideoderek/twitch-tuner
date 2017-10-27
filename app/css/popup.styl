@@ -5,105 +5,120 @@
 
 body
 	margin 0
-	width 320px
+	padding-bottom 20px
+	width 340px
 	font-size 18px
-	font-family $body_font
+	font-family $main_font
+	background #DDDDDD
+
+// Header
 
 #header
-	padding-top 7px
+	background $primary_color
+	padding-top 10px
 
-	.bar
-		padding-left 12px
-		padding-right 12px
-
-		& + .bar
-			margin-top 10px
+.bar
+	padding 5px 12px 10px
+	margin 0 10px 10px
+	border-radius 2px
+	position relative
 
 	.content
 		display inline-block
-		vertical-align middle
 
 	.controls
 		display inline-block
-		vertical-align middle
 		position absolute
-		right 12px
+		right 5px
 
 	.button
+		cursor pointer
 		width 24px
 		height 24px
-		cursor pointer
 
-#title_bar
-	font-size 0.9em
-	letter-spacing 1px
-	word-spacing 3px
+// Username bar
+
+$user_background = #55DD33
+$user_shadow = #22AA00
 
 #user_bar
-	background #7E5BBE
+	background $user_background
 	color #FFFFFF
 	font-size 0.9em
-	padding-top 5px
-	padding-bottom 10px
-
-	&.warning
-		background #F2DE50
-		color black
-
-#user_bar label,
-#username_field,
-.button-row
-	display block
-
-#username_display
+	box-shadow 0 0 3px $primary_shadow, inset 0 0 3px $user_shadow
 	cursor pointer
+
+	&.editing
+		cursor default
+
+	.button-row
+		text-align right
+
+	button
+		background transparent
+		border-color transparent
+		border-radius 2px
+		padding 3px 7px
+		color #FFFFFF
+		font-size 0.9em
+		cursor pointer
+		text-transform uppercase
+		letter-spacing 1px
+		outline 0
+		font-family $main_font
+
+	button:hover
+		background darken(@background, 10%)
+
+	button:focus
+		background darken(@background, 20%)
+
+#user_bar.warning
+	background #FF2222
+	box-shadow 0 0 3px $primary_shadow, inset 0 0 3px #BB0000
+
+	button:hover
+		background darken(@background, 10%)
+
+	button:focus
+		background darken(@background, 20%)
 
 #username_editor
 	display none
 
-#user_bar.editing #username_editor
-	display block
+	#user_bar.editing &
+		display block
 
 #username_field
-	border 1px solid #442185
+	display block
+	border none
+	box-shadow 0 0 3px $user_shadow, inset 0 0 3px #CCCCCC
+	border-radius 2px
 	background #FFFFFF
 	font-size 1em
-	padding 4px 6px 5px 6px
-	margin 9px auto
+	padding 5px 0
+	margin 13px 0 10px
 	text-align center
 	letter-spacing 2px
-
-.button-row
-	text-align right
-
-.button-row button + button
-	margin-left 8px
-
-#username_confirm,
-#username_cancel
-	border 1px solid black
-	padding 3px 7px 5px 7px
-	color #FFFFFF
-	font-size 14px
-	font-family $control_font
-	cursor pointer
-
-#username_confirm
-	background #3BC13B
-	border-color #2BB12B
-
-#username_cancel
-	background transparent
-	border-color transparent
-
-#options_button
-	background url('/img/options.png')
+	width 100%
+	outline 0
 
 #edit_button
 	background url('/img/edit.png')
 
+// Update time tracker bar
+
+#info_bar
+	font-size 0.8em
+	background #FFFFFF
+	box-shadow 0 0 3px $primary_shadow, inset 0 0 3px #DDDDDD
+	cursor default
+	color #000000
+
+#time_label
+	color #555555
+
 #reload_button
-	cursor pointer
 	background url('/img/reload.png')
 
 #reload_button.updating
@@ -116,52 +131,37 @@ body
 	100%
 		transform rotateZ(360deg)
 
-#info_bar
-	font-size 0.8em
-
-	.content
-		cursor default
-
-#time_label
-	color #5F5F5F
-
-#time_display
-	margin-left 10px
+// Tab bar
 
 nav
-	font-size 0.8em
-	margin-top 30px
+	font-size 0.9em
+	margin 20px 10px 0
 
 	ul
 		margin 0
-		list-style-type none
 		padding 0
+		list-style-type none
 
 	li
-		color #6441A5
-		color #111111
+		color #BBBBBB
 		display inline-block
-		padding 6px 8px 8px 8px
+		padding 0 0 12px
 		letter-spacing 1px
 		cursor pointer
 		width 50%
 		text-align center
 
-		&.active,
-		&.active:hover
-			background #6441A5
+		&.active
+		&:hover
 			color #FFFFFF
 
-		&:hover
-			background #7E5BBE
-			color #FFFFFF
+		&.active
+			border-bottom 3px solid #FFFFFF
+
+// Streams & channels
 
 #lists
-	background #6441A5
-	padding 5px
-
 	ul
-		margin 0
 		list-style-type none
 		margin 0
 		padding 0
@@ -171,92 +171,208 @@ nav
 			display block
 
 .notice
-	margin 0
-	padding 10px 20px
-	background #7E5BBE
+	margin 20px 10px 0
+	padding 10px 14px
+	background $primary_color
 	color #FFFFFF
+	border-radius 2px
+	box-shadow 0 0 3px #666666
+	cursor default
 
 .item
-	background #FAFAFA
+	background #FFFFFF
 	cursor pointer
-	border-radius 1px 1px 0 0
-	border 1px solid #442185
-	padding 6px
 	position relative
+	margin 20px 10px 0
+	border-radius 0 0 2px 2px
+	box-shadow 0 1px 3px #666666
+	padding-bottom 10px
 
-	& + .item
-		margin-top 5px
-
-	h2
+	.lead
 		font-size 1em
-		letter-spacing 1px
+		letter-spacing 2px
 		margin 0
 		font-weight normal
-		font-family $subheading_font
-
-	p
-		margin 6px 0 0 0
-		font-size 0.8em
-
-	.game
-		text-decoration underline
-		color #6441A5
+		font-family $heading_font
+		background #F0F0F0
+		padding 10px 14px
 
 	.icon
-		vertical-align middle
-		padding-right 6px
+		margin-right 8px
+		height 24px
+		width 24px
+		// I don't know why this is necessary
+		min-width 24px
 
-	.favorite
-		float right
+	.game
+	.audience
+		margin-top 10px
+		display flex
+		flex-direction row
+		align-items center
+
+	.game_name
+		color $primary_color
+		overflow hidden
+		white-space nowrap
+
+		&:hover
+			border-bottom 1px solid $primary_color
+
+	.game_icon
+		background url('/img/game.png')
+
+	.audience_count
+		color #555555
+
+	.audience_icon
+		background url('/img/audience.png')
+
+	.description
+		clear both
+		padding 10px 14px 0
+		color #555555
+		font-style italic
+		font-size 0.8em
+
+.favorite
+	float right
+
+	.favorite_icon
 		width 24px
 		height 24px
-		vertical-align middle
-
-		&[data-favorite='true']
-			background url('/img/favorite-favorited.png')
-
-		&[data-favorite='true']:hover
-			background url('/img/favorite-unfavorite.png')
-
-	&:hover .favorite[data-favorite='false']
+		display block
 		background url('/img/favorite-unfavorited.png')
 
-.preview-button
-	background-color $primary_color
-	background-image url('/img/preview-show.png')
-	background-repeat no-repeat
-	background-position center
-	border-width 1px 0 0 1px
-	border-style solid
-	border-color $primary_dark
-	border-radius 6px 6px 0 6px
-	width 32px
-	height 32px
-	position absolute
-	right -1px
-	bottom -1px
-	z-index 1
+	&[data-favorite='true'] .favorite_icon
+		background url('/img/favorite-favorited.png')
 
-	.show-preview &
-		background-image url('/img/preview-hide.png')
+	&[data-favorite='true']:hover .favorite_icon
+		background url('/img/favorite-unfavorite.png')
 
 .preview
-	margin-top 6px
-	display none
+	display inline-block
+	width 40%
+	float left
 	position relative
-
-	.show-preview &
-		display block
 
 	img
 		width 100%
+		vertical-align middle
 
-	&:hover:before
-		content attr(data-description)
-		background rgba(255, 255, 255, 0.9)
+	&:hover::after
+		content 'enlarge'
+		text-transform uppercase
+		text-align center
+		color #FFFFFF
 		position absolute
+		background rgba(50, 50, 50, 0.5)
+		width 100%
+		line-height 72px
 		top 0
-		left 0
-		font-size 0.7em
-		color #000000
-		padding 0 6px 4px 6px
+		bottom 0
+		letter-spacing 1px
+
+	&.enlarged
+		display block
+		width 320px
+		float none
+
+		&:hover::after
+			content 'shrink'
+			line-height 180px
+
+.metadata
+	font-size 0.83em
+
+	.stream &
+		display inline-block
+		padding 0 10px 0 8px
+		width 60%
+
+	.channel &
+		padding 0 14px
+
+	.preview.enlarged + &
+		display block
+		width 100%
+
+#modeToggle
+	margin 20px 10px 0
+	border-radius 2px
+	box-shadow 0 0 3px #666666
+	background #FFFFFF
+	display inline-block
+	color #222222
+	padding 10px 14px
+
+#modeToggle_checkbox
+	margin 0 10px 0 0
+
+#modeToggle
+#modeToggle_checkbox
+#modeToggle_label
+	cursor pointer
+
+#options_button
+	position fixed
+	bottom 15px
+	right 15px
+	height 48px
+	width 48px
+	padding 6px
+	border-radius 100px
+	background $primary_color
+	box-shadow 0 0 3px #666666
+	z-index 1
+
+	img
+		vertical-align middle
+
+.--darkMode
+	body&
+		background #333333
+
+	#info_bar
+		background #333333
+		box-shadow 0 0 3px $primary_shadow, inset 0 0 3px #111111
+		color #FFFFFF
+
+	#time_label
+		color #AAAAAA
+
+	#reload_button
+		background url('/img/darkMode_reload.png')
+
+	.notice
+		box-shadow 0 0 3px #111111
+
+	.item
+	#modeToggle
+		background #777777
+		box-shadow 0 1px 3px #111111
+		color #FFFFFF
+
+	.lead
+		background #555555
+
+	.game_name
+		color #FFFFFF
+
+		&:hover
+			border-bottom 1px solid #FFFFFF
+
+	.game_icon
+		background url('/img/darkMode_game.png')
+
+	.audience_count
+		color #DDDDDD
+
+	.audience_icon
+		background url('/img/darkMode_audience.png')
+
+	.description
+		color #DDDDDD
+
+	#options_button
+		box-shadow 0 0 3px #111111

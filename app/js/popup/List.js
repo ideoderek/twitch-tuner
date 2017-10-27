@@ -5,7 +5,7 @@ export default class List {
 		this.getData = getData
 
 		this.container = document.getElementById(id)
-		this.container.addEventListener('click', this.click.bind(this), false)
+		this.container.addEventListener('mousedown', this.click.bind(this))
 	}
 
 	display(content) {
@@ -28,15 +28,15 @@ export default class List {
 		return element.getAttribute('data-channel')
 	}
 
-	openChannel(channel) {
-		this.app.openChannel(channel)
+	openChannel(channel, active) {
+		this.app.openChannel(channel, active)
 	}
 
-	openStream(channel) {
-		this.app.openStream(channel)
+	openStream(channel, active) {
+		this.app.openStream(channel, active)
 	}
 
-	openGame(game) {
-		this.app.openGame(game)
+	openGame(game, active) {
+		this.app.openGame(game, active)
 	}
 }

@@ -4,24 +4,21 @@
 <title></title>
 <link rel="stylesheet" href="/css/popup.css">
 
+<div class="button" id="options_button" title="Open settings">
+	<img src="/img/settings.png">
+</div>
 <div id="header">
-	<div class="bar" id="title_bar">
-		<div class="content">Twitch Tuner</div>
-		<div class="controls">
-			<div class="button" id="options_button"></div>
-		</div>
-	</div>
 	<div class="bar" id="user_bar">
 		<div id="username_display">
 			<div class="content">
 				<div id="username"></div>
 			</div>
 			<div class="controls">
-				<div class="button" id="edit_button"></div>
+				<div id="edit_button" class="button"></div>
 			</div>
 		</div>
 		<div id="username_editor">
-			<input type="text" id="username_field">
+			<input type="text" id="username_field" autocomplete="off" spellcheck="false">
 			<div class="button-row">
 				<button type="button" id="username_cancel">cancel</button>
 				<button type="button" id="username_confirm">save</button>
@@ -31,18 +28,18 @@
 	<div class="bar" id="info_bar">
 		<div class="content">
 			<div id="time_label">Last update:</div>
-			<div id="time_display">None</div>
+			<div id="time_display">Never</div>
 		</div>
 		<div class="controls">
-			<div class="button" id="reload_button"></div>
+			<div id="reload_button" class="button"></div>
 		</div>
 	</div>
+	<nav>
+		<ul id="tab_bar">
+			<li id="streams_tab" class="tab" data-tab="streams">Streams</li><li id="channels_tab" class="tab" data-tab="channels">Channels</li>
+		</ul>
+	</nav>
 </div>
-<nav>
-	<ul id="tab_bar">
-		<li id="streams_tab" class="tab" data-tab="streams">Streams</li><li id="channels_tab" class="tab" data-tab="channels">Channels</li>
-	</ul>
-</nav>
 <div id="lists">
 	<ul id="streams_pane" class="streams toggleable">
 
@@ -50,6 +47,9 @@
 	<ul id="channels_pane" class="channels toggleable">
 
 	</ul>
+</div>
+<div id="modeToggle">
+	<input type="checkbox" id="modeToggle_checkbox"><label id="modeToggle_label">Dark mode</label>
 </div>
 <!-- Several stable-channel releases of Chrome contain a bug that interferes with scrolling in extension popups. -->
 <!-- These releases include version 53.0.2785.143 m, but may not include more recent releases. -->

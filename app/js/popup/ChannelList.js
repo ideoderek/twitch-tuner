@@ -1,7 +1,7 @@
 import List from "./List.js"
 
-const NO_USERNAME_MESSAGE = '<p class="notice">Enter you Twitch.tv username to see your followed channels</p>'
-const NO_FOLLOWS_MESSAGE = '<p class="notice">You are not following any channels</p>'
+const NO_USERNAME_MESSAGE = '<div class="notice">Enter your username to see your followed channels</div>'
+const NO_FOLLOWS_MESSAGE = '<div class="notice">You are not following any channels</div>'
 const CONTAINER_ID = 'channels_pane'
 
 export default class ChannelList extends List {
@@ -20,16 +20,20 @@ export default class ChannelList extends List {
 	createListItem(channel, acc) {
 		let html = `
 			<li class="item channel" data-channel="${channel.name}">
-				<h2>
-					${channel.displayName}
-					<span class="favorite" data-favorite="${channel.favorite}"></span>
-				</h2>
-				<p class="audience">
-					<img class="icon" src="/img/audience.png">
-					<span class="followers">
-						${channel.formattedFollowers} follower${channel.followers === 1 ? '' : 's'}
+				<h2 class="lead">
+					<span class="displayName">${channel.displayName}</span>
+					<span class="favorite" data-favorite="${channel.favorite}">
+						<span class="favorite_icon"></span>
 					</span>
-				</p>
+				</h2>
+				<div class="metadata">
+					<div class="audience">
+						<span class="audience_icon icon"></span>
+						<span class="audience_count">
+							${channel.formattedFollowers} follower${channel.followers === 1 ? '' : 's'}
+						</span>
+					</div>
+				</div>
 			</li>
 		`
 
@@ -39,13 +43,27 @@ export default class ChannelList extends List {
 	click(event) {
 		let element = event.target
 		let channel = this.getChannelName(element)
+		let button = event.button
 
-		if (element.classList.contains('favorite')) {
-			this.toggleFavorite(element, channel)
+		if (button !== 0 && button !== 1) {
+			return
 		}
-		else {
-			this.openChannel(channel)
+
+		event.preventDefault()
+
+		let active = button === 0
+
+		while (! element.classList.contains('channel')) {
+			if (element.classList.contains('favorite')) {
+				this.toggleFavorite(element, channel)
+
+				return
+			}
+
+			element = element.parentElement
 		}
+
+		this.openChannel(channel, active)
 	}
 
 	update() {
