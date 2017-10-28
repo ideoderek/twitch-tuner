@@ -9,7 +9,7 @@
 	"version": "0.1.0",
 	"version_name": "November 8, 2016 (version 0.1.0)",
 
-	"minimum_chrome_version": "28",
+	"minimum_chrome_version": "29",
 
 	"icons": {
 		"48": "img/icon48.png",
