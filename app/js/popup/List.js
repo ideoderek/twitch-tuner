@@ -39,4 +39,18 @@ export default class List {
 	openGame(game, active) {
 		this.app.openGame(game, active)
 	}
+
+	isLeftClick(event) {
+		return event.button === 0
+	}
+
+	isValidClick(event) {
+		let button = event.button
+
+		if (button !== 0 && button !== 1) {
+			return false
+		}
+
+		return ! event.target.classList.contains('pane')
+	}
 }
