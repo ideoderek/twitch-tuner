@@ -6,8 +6,8 @@
 	"description": "Notifies you when your favorite Twitch streamers are live.",
 	"homepage_url": "https://github.com/ideoderek/twitch-tuner",
 
-	"version": "0.1.0",
-	"version_name": "November 8, 2016 (version 0.1.0)",
+	"version": "1.0.0",
+	"version_name": "October 28, 2017 (1.0.0)",
 
 	"minimum_chrome_version": "29",
 

@@ -1,6 +1,6 @@
 {
   "name": "twitch-tuner",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "A Chrome extension that notifies users when their favorite Twitch.tv streamers are live.",
   "homepage": "https://github.com/ideoderek/twitch-tuner",
   "author": {
