@@ -53,17 +53,15 @@ export default class StreamList extends List {
 	}
 
 	click(event) {
-		let element = event.target
-		let channel = this.getChannelName(element)
-		let button = event.button
-
-		if (button !== 0 && button !== 1) {
+		if (! this.isValidClick(event)) {
 			return
 		}
 
 		event.preventDefault()
 
-		let active = button === 0
+		let active = this.isLeftClick(event)
+		let element = event.target
+		let channel = this.getChannelName(element)
 
 		while (! element.classList.contains('stream')) {
 			if (element.classList.contains('game_name')) {
