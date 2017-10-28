@@ -21,7 +21,7 @@ The Twitch Tuner repository only contains the extension's source files, in the `
 2. Install npm
 3. Run `npm install` in the root directory
 
-Now you are ready to build the extension. There are two ways to do this. You can do `npm run pack` to perform a one-time build. Or you can do `npm run watch-pack` to watch for changes to the source files and automatically build the extension when they occur.
+Now you are ready to build the extension. There are two ways to do this. You can do `npm run pack` to perform a one-time build. Or you can do `npm run pack` to watch for changes to the source files and automatically build the extension when they occur.
 
 Both methods will create a directory called `pkg` containing the built extension.
 
