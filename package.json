@@ -15,7 +15,7 @@
   "scripts": {
     "js:clean": "del-cli pkg/js/**/* && mkdirp pkg/js",
 	"js:debug-background": "rollup -f iife -n TwitchTuner app/js/background/main.js > pkg/js/background.js && babel pkg/js/background.js -o pkg/js/background.js -s",
-	"js:pack-background": "rollup -f iife app/js/background/main.js > pkg/js/background.js && babel pkg/js/background.js -o pkg/js/background.js && uglifyjs pkg/js/background.js -m -c -o pkg/js/background.js",
+	"js:pack-background": "rollup -f iife -n TwitchTuner app/js/background/main.js > pkg/js/background.js && babel pkg/js/background.js -o pkg/js/background.js && uglifyjs pkg/js/background.js -m -c -o pkg/js/background.js",
 	"js:debug-popup": "rollup -f iife app/js/popup/main.js > pkg/js/popup.js && babel pkg/js/popup.js -o pkg/js/popup.js -s",
 	"js:pack-popup": "rollup -f iife app/js/popup/main.js > pkg/js/popup.js && babel pkg/js/popup.js -o pkg/js/popup.js && uglifyjs pkg/js/popup.js -m -c -o pkg/js/popup.js",
 	"js:debug-options": "rollup -f iife app/js/options/main.js > pkg/js/options.js && babel pkg/js/options.js -o pkg/js/options.js -s",
@@ -30,8 +30,9 @@
     "html:watch": "watch \"npm run html:pack\" app/html",
     "manifest:pack": "copyfiles -f app/manifest.json pkg",
     "manifest:watch": "watch \"npm run manifest:pack\" app --ignoreDirectoryPattern=/.+/",
-    "pack": "npm run js:pack && npm run css:pack && npm run img:pack && npm run html:pack && npm run manifest:pack",
-    "watch-pack": "parallelshell \"npm run js:watch\" \"npm run css:watch\" \"npm run img:watch\" \"npm run html:watch\" \"npm run manifest:watch\""
+	"clean": "del-cli pkg && mkdirp pkg",
+    "pack": "npm run clean && npm run js:pack && npm run css:pack && npm run img:pack && npm run html:pack && npm run manifest:pack",
+	"watch": "parallelshell \"npm run js:watch\" \"npm run css:watch\" \"npm run img:watch\" \"npm run html:watch\" \"npm run manifest:watch\""
   },
   "babel": {
     "presets": [
