@@ -3,7 +3,7 @@
 
 	"name": "Twitch Tuner",
 	"author": "ideoderek",
-	"description": "Get notified when the Twitch.tv streamers you follow are live.",
+	"description": "Notifies you when your favorite Twitch streamers are live.",
 	"homepage_url": "https://github.com/ideoderek/twitch-tuner",
 
 	"version": "0.1.0",
